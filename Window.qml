@@ -1,46 +1,31 @@
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Controls
 
-ApplicationWindow {
-    width: 640
-    height: 480
-    visible: true
-    title: qsTr("hello, world")
-    menuBar: MenuBar {
-        Menu {
-            title: qsTr("File")
-            MenuItem { action:open }
-            MenuItem { action:quit }
-        }
-    }
+ApplicationWindow{
+ id:mainWindow
+ visible:true
+ property int windowWidth: Screen.desktopAvailableWidth*0.65    //窗口宽度，跟随电脑屏幕变化
+ property int windowHeight: Screen.desktopAvailableHeight*0.75  //窗口高度，跟随电脑屏幕变化
 
-    header: ToolBar {
-        RowLayout{
-            ToolButton{ action: open }
-            ToolButton{ action: quit }
-        }
-    }
+ width: windowWidth
+ height: windowHeight
 
-    Action {
-        id: open
-        text: qsTr("&Open...")
-        icon.name: "document-open"
-        shortcut: "StandardKey.Open"
-        onTriggered: console.log("Open action triggered");
-    }
 
-    Action {
-        id: quit
-        text: qsTr("&Quit")
-        icon.name: "application-exit"
-        onTriggered: Qt.quit();
-    }
 
-    //Content Area
-    TextArea {
-        text: qsTr("hello, world")
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-    }
-}
+ Contents{
+     id:content
+     anchors.fill: parent
+ }
+
+
+ }
+
+
+
+
+
+
+
+
+

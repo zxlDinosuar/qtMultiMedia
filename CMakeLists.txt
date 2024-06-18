@@ -20,6 +20,7 @@ qt_add_qml_module(appmultiMedia
     QML_FILES Contents.qml
     QML_FILES Actions.qml
     QML_FILES Dialogs.qml
+    RESOURCES image.qrc
 )
 
 target_compile_features(appmultiMedia PRIVATE cxx_std_20)

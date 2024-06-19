@@ -13,6 +13,35 @@ Item {
             width:parent.width
             height:parent.height*0.5
             color:"yellow"
+            Rectangle{
+                          id:_mediaPlayer
+                          width:parent.width/2
+                          height:parent.height
+                          color:"red"
+                      }
+                      Rectangle{
+                          width:parent.width/2
+                          height:parent.height
+                          x:parent.width/2
+                          color:"yellow"
+                          Rectangle{
+                              id:_leftTop_rightTop
+                              color:"blue"
+                              width:parent.width
+                              height:parent.height/2
+                              // Row{
+                              //     Label:"剪切文件"
+                              // }
+
+                          }
+                          Rectangle{
+                              id:_leftTop_rightBottom
+                              color:"orange"
+                              width:parent.width
+                              height:parent.height/2
+                              y:parent.height/2
+                          }
+                      }
         }
         Rectangle{
             id:_leftCenter
@@ -40,10 +69,9 @@ Item {
                 Button{
                     x:parent.width*0.9
                     text:"添加特效"
+                    height:parent.height
+                    // verticalAlignment: Text.AlignVCenter
                 }
-                // MenuBar{
-
-                // }
             }
             Rectangle{
                 id:_leftBottombottom

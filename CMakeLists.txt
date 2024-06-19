@@ -6,6 +6,9 @@ project(
   LANGUAGES CXX)
 
 find_package(Qt6 6.4 REQUIRED COMPONENTS Quick)
+find_package(Qt6 6.4 REQUIRED COMPONENTS Multimedia)
+find_package(Qt6 6.4 REQUIRED COMPONENTS Widgets)
+find_package(Qt6 6.4 REQUIRED COMPONENTS MultimediaWidgets)
 
 qt_standard_project_setup()
 
@@ -27,7 +30,10 @@ qt_add_qml_module(
   QML_FILES
   Actions.qml
   QML_FILES
-  Dialogs.qml)
+  Dialogs.qml
+  SOURCES
+  mediapaly.h
+  mediapaly.cpp)
 
 target_compile_features(appmultiMedia PRIVATE cxx_std_20)
 
@@ -42,6 +48,9 @@ set_target_properties(
              WIN32_EXECUTABLE TRUE)
 
 target_link_libraries(appmultiMedia PRIVATE Qt6::Quick)
+target_link_libraries(appmultiMedia PRIVATE Qt6::Widgets)
+target_link_libraries(appmultiMedia PRIVATE Qt6::Multimedia)
+target_link_libraries(appmultiMedia PRIVATE Qt6::MultimediaWidgets)
 
 include(GNUInstallDirs)
 install(

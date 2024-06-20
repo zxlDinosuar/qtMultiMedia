@@ -1,67 +1,127 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import "multiMedia.js" as Controller
+import QtMultimedia
 
 Item {
+    property alias dialogs: _allDialogs
+    property alias player: _player
+    property alias videoList: _videoList
+    // property alias footer: _footer
+    property alias audioOutput: _audioOutput
+    property alias progressSlider:_progressSlider
+
+    Dialogs {
+        id:_allDialogs
+        fileOpen.onAccepted: Controller.setFilesModel(fileOpen.selectedFiles)
+    }
+
     Rectangle{
-        id:_left
         width: parent.width*0.7
         height:parent.height
-        color:"red"
         Rectangle{
-            id:_leftTop
             width:parent.width
             height:parent.height*0.5
-            color:"yellow"
             Rectangle{
-                          id:_mediaPlayer
-                          width:parent.width/2
-                          height:parent.height
-                          color:"red"
-                      }
-                      Rectangle{
-                          width:parent.width/2
-                          height:parent.height
-                          x:parent.width/2
-                          color:"yellow"
-                          Rectangle{
-                              id:_leftTop_rightTop
-                              color:"blue"
-                              width:parent.width
-                              height:parent.height/2
-                              // Row{
-                              //     Label:"剪切文件"
-                              // }
+                width:parent.width*0.5
+                height:parent.height
+                color:Qt.rgba(0,0,0,0.6)
+                border.color: "black" // 边框的颜色
+                border.width: 2 // 边框的宽度
+                MediaPlayer {
+                    id:_player
+                    audioOutput: AudioOutput {
+                        id:_audioOutput
+                    }
+                    videoOutput: myvideoOutput
+                }
+                VideoOutput {
+                    id:myvideoOutput
+                    anchors.fill: parent
+                    focus: true
+                    Keys.onSpacePressed: player.playbackState === MediaPlayer.PlayingState ? player.pause():player.play()
+                    Keys.onLeftPressed: player.position = player.position - 5000
+                    Keys.onRightPressed: player.position = player.position + 5000
+                }
 
-                          }
-                          Rectangle{
-                              id:_leftTop_rightBottom
-                              color:"orange"
-                              width:parent.width
-                              height:parent.height/2
-                              y:parent.height/2
-                          }
-                      }
+                // TapHandler {
+                //     onTapped: myvideoOutput.focus = true
+                // }
+             }
+            Rectangle{
+                width:parent.width*0.5
+                height:parent.height
+                x:parent.width*0.5
+                Rectangle{
+                    color:"blue"
+                    width:parent.width
+                    height:parent.height*0.5
+                }
+                Rectangle{
+                    color:"orange"
+                    width:parent.width
+                    height:parent.height*0.5
+                    y:parent.height*0.5
+                }
+            }
         }
         Rectangle{
-            id:_leftCenter
             width:parent.width
             height:parent.height*0.1
             y:parent.height*0.5
-            color:"black"
+            color:Qt.rgba(0,0,0,0.6)
+            Slider {
+                id:_progressSlider
+                width:parent.width*0.5
+                height: parent.height
+                enabled: player.seekable
+                value: player.duration > 0 ? player.position / player.duration : 0
+                onMoved:{
+                    player.position = player.duration * progressSlider.position
+                    myvideoOutput.focus = true
+                    end = progressSlider.position
+                }
+            }
+            Label {
+                 width:parent.width*0.1
+                 height: parent.height
+                 x:parent.width*0.51
+                 text: "当前时间："
+                 verticalAlignment: Text.AlignVCenter
+            }
+            Label {
+                 width:parent.width*0.1
+                 height: parent.height
+                 x:parent.width*0.6
+                 text: Controller.formatTime(player.position)
+                 verticalAlignment: Text.AlignVCenter
+            }
+            Label {
+                 width:parent.width*0.1
+                 height: parent.height
+                 x:parent.width*0.71
+                 text: "总时长："
+                 verticalAlignment: Text.AlignVCenter
+            }
+            Label {
+                 width:parent.width*0.1
+                 height: parent.height
+                 x:parent.width*0.8
+                 text: Controller.formatTime(player.duration)
+                 verticalAlignment: Text.AlignVCenter
+            }
         }
         Rectangle{
-            id:_leftBottom
             width:parent.width
             height:parent.height*0.4
             y:parent.height*0.6
             color:"blue"
             Rectangle{
-                id:_leftBottomtop
                 width:parent.width
                 height:parent.height*0.1
                 color: "white"
-                Text{
+                Label {
                     height:parent.height
                     text:"素材库"
                     verticalAlignment: Text.AlignVCenter
@@ -70,11 +130,9 @@ Item {
                     x:parent.width*0.9
                     text:"添加特效"
                     height:parent.height
-                    // verticalAlignment: Text.AlignVCenter
                 }
             }
             Rectangle{
-                id:_leftBottombottom
                 width:parent.width
                 height:parent.height*0.9
                 color: "black"
@@ -83,31 +141,75 @@ Item {
         }
     }
     Rectangle{
-        id:_right
         x:parent.width*0.7
         width: parent.width*0.3
         height:parent.height
-        color:"blue"
+        // opacity: 0.0
+        color:Qt.rgba(0,0,0,0.6)
         Rectangle{
-            id:_rightTop
             width:parent.width
             height:parent.height*0.5
-            color:"white"
-            Text{
+            Label {
+                width:parent.width
+                height:parent.height*0.1
                 text:"视频列表"
+                color: "black"
+            }
+            Rectangle {
+                width:parent.width
+                height:parent.height*0.9
+                y:parent.height*0.1
+                ListView{
+                    id:_videoList
+                    anchors.fill: parent
+
+                    model: ListModel{
+                        id: filesModel
+                    }
+                    delegate: VideoDelegate{id: videoItem}
+                }
+
+                component VideoDelegate: Rectangle {
+                    id:videoRoot
+                    property url filepath:filePath
+                    width: parent.width
+                    height: 30
+                    Text {
+                        id:text
+                        verticalAlignment:Text.AlignVCenter
+                        horizontalAlignment: Text.AlignLeft
+                        color: videoRoot.ListView.isCurrentItem?"red":"black"
+                        width: videoItem.width
+                        font.pixelSize: 18
+                        text: filePath
+                    }
+
+                    TapHandler {
+                        onTapped: {
+                            videoList.currentIndex = index
+                            player.source = videoList.currentItem.filepath
+                            player.play()
+                        }
+                    }
+                }
             }
         }
+
         Rectangle{
-            id:_rightBottom
             width: parent.width*0.9
             height:parent.height*0.9
             x:parent.width*0.1
             y:parent.height*0.6
             color:"orange"
-            Text{
+            Label {
                 text:"合并列表（放入合并视频并点击）"
             }
         }
+    }
+
+    Component.onCompleted: {
+        filesModel.clear()
+        Controller.initial()
     }
 }
 

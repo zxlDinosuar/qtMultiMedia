@@ -36,13 +36,13 @@ ApplicationWindow{
 
     Actions{
         id:actions
+        open.onTriggered: contents.dialogs.fileOpen.open()
     }
 
     Contents{
-        id:content
+        id:contents
         anchors.fill: parent
     }
-
 
  }
 

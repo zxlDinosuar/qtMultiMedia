@@ -33,7 +33,8 @@ qt_add_qml_module(
   Dialogs.qml
   SOURCES
   mediapaly.h
-  mediapaly.cpp)
+  mediapaly.cpp
+  QML_FILES Footer.qml)
 
 target_compile_features(appmultiMedia PRIVATE cxx_std_20)
 

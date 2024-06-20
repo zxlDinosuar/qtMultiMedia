@@ -15,7 +15,7 @@ Item {
             title: "Select some song files"
             fileMode: FileDialog.OpenFiles
             currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
-            nameFilters: [ "video files (*.mp4)" ]
+            nameFilters: [ "video files (*.mp4 *.avi *.mkv)" ]
         }
 
     MessageDialog{

@@ -3,18 +3,23 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import "multiMedia.js" as Controller
 import QtMultimedia
+import multiMedia
 
 Item {
     property alias dialogs: _allDialogs
     property alias player: _player
     property alias videoList: _videoList
-    // property alias footer: _footer
+    property alias mediaDate:_mediaDate
     property alias audioOutput: _audioOutput
     property alias progressSlider:_progressSlider
 
     Dialogs {
         id:_allDialogs
         fileOpen.onAccepted: Controller.setFilesModel(fileOpen.selectedFiles)
+    }
+
+    MediaDate {
+        id:_mediaDate
     }
 
     Rectangle{//left
@@ -330,7 +335,6 @@ Item {
                 onMoved:{
                     player.position = player.duration * progressSlider.position
                     myvideoOutput.focus = true
-                    end = progressSlider.position
                 }
             }
             Label {
@@ -439,6 +443,7 @@ Item {
                             videoList.currentIndex = index
                             player.source = videoList.currentItem.filepath
                             player.play()
+                            mediaDate.list_item_clicked(player.source);
                         }
                     }
                 }

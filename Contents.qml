@@ -17,7 +17,7 @@ Item {
         fileOpen.onAccepted: Controller.setFilesModel(fileOpen.selectedFiles)
     }
 
-    Rectangle{
+    Rectangle{//left
         width: parent.width*0.7
         height:parent.height
         Rectangle{
@@ -48,21 +48,230 @@ Item {
                 // TapHandler {
                 //     onTapped: myvideoOutput.focus = true
                 // }
-             }
+            }
             Rectangle{
                 width:parent.width*0.5
                 height:parent.height
                 x:parent.width*0.5
                 Rectangle{
-                    color:"blue"
+                    id:_leftTop_right_top
+                    // property int flag
                     width:parent.width
                     height:parent.height*0.5
+                    RowLayout{
+                        id:_cutStart
+                        focus: true
+                        width:parent.width
+                        height:parent.height/4
+                        Label
+                        {
+                            width:parent.width/10
+                            height: parent.height
+                            text:"剪切开始："
+                            color:"black"
+                            leftPadding: parent.width/8
+                        }
+                        //实现QTimeEdit相似的功能
+                        RowLayout{
+                            focus: true
+                            x:parent.width/10
+                            width:parent.width*0.9
+                            height: parent.height
+                            TextInput{
+                                id:_hourEditTop
+                                text:"00"
+                                height: parent.height
+                                verticalAlignment: Text.AlignVCenter
+                                TapHandler{
+                                    onTapped:flags=0
+                                }
+                            }
+                            Text{
+                                text:":"
+                                height: parent.height
+                                verticalAlignment: Text.AlignVCenter
+                            }
+
+                            TextEdit{
+                                id:_minuteEditTop
+                                text:"00"
+                                height: parent.height
+                                verticalAlignment: Text.AlignVCenter
+                                TapHandler{
+                                    onTapped:flags=1
+                                }
+                            }
+                            Text{
+                                text:":"
+                                height: parent.height
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            TextEdit{
+                                id:_secondEditTop
+                                text:"00"
+                                height: parent.height
+                                verticalAlignment: Text.AlignVCenter
+                                TapHandler{
+                                    onTapped:flags=2
+                                }
+                            }
+                            ColumnLayout{
+                                height: parent.height
+                                Button{
+                                    topPadding: 10
+                                    implicitWidth:10
+                                    implicitHeight:10
+                                    id:_forwardTop
+                                    onClicked:Controller.addTime(_hourEditTop,_minuteEditTop,_secondEditTop,flags)
+                                }
+                                Button{
+                                    implicitWidth:10
+                                    implicitHeight:10
+                                    id:_backwardTop
+                                    onClicked: Controller.reduceTime(_hourEditTop,_minuteEditTop,_secondEditTop,flags)
+                                }
+                            }
+                        }
+                    }
+                    RowLayout{
+                        y:parent.height/4
+                        width:parent.width
+                        height:parent.height/4
+                        Label
+                        {
+                            width:parent.width/10
+                            height: parent.height
+                            text:"剪切结束："
+                            color:"black"
+                            leftPadding: parent.width/8
+                        }
+                        //实现QTimeEdit相似的功能
+                        RowLayout{
+                            focus: true
+                            x:parent.width/10
+                            width:parent.width*0.9
+                            height: parent.height
+                            TextEdit{
+                                id:_hourEditCenter
+                                text:"00"
+                                height: parent.height
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            Text{
+                                text:":"
+                                height: parent.height
+                                verticalAlignment: Text.AlignVCenter
+                            }
+
+                            TextEdit{
+                                id:_minuteEditCenter
+                                text:"00"
+                                height: parent.height
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            Text{
+                                text:":"
+                                height: parent.height
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            TextEdit{
+                                id:_secondEditCenter
+                                text:"00"
+                                height: parent.height
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            ColumnLayout{
+                                height: parent.height
+                                Button{
+                                    topPadding: 10
+                                    implicitWidth:10
+                                    implicitHeight:10
+                                    id:_forwardCenter
+                                    onClicked:Controller.addTime(_hourEditCenter,_minuteEditCenter,_secondEditCenter)
+                                }
+                                Button{
+                                    implicitWidth:10
+                                    implicitHeight:10
+                                    id:_backwardCenter
+                                    onClicked: Controller.reduceTime(_hourEditCenter,_minuteEditCenter,_secondEditCenter)
+                                }
+                            }
+                        }
+
+                    }
+
                 }
                 Rectangle{
-                    color:"orange"
+                    id:_leftTop_rightBottom
                     width:parent.width
-                    height:parent.height*0.5
-                    y:parent.height*0.5
+                    height:parent.height/2
+                    y:parent.height/2
+                    RowLayout{
+                        width:parent.width
+                        height:parent.height/4
+                        Label
+                        {
+                            width:parent.width/10
+                            height: parent.height
+                            text:"拆分节点："
+                            color:"black"
+                            leftPadding: parent.width/8
+                        }
+                        //实现QTimeEdit相似的功能
+                        RowLayout{
+                            focus:true
+                            x:parent.width/10
+                            width:parent.width*0.9
+                            height: parent.height
+                            TextEdit{
+                                id:_hourEditBottom
+                                text:"00"
+                                height: parent.height
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            Text{
+                                text:":"
+                                height: parent.height
+                                verticalAlignment: Text.AlignVCenter
+                            }
+
+                            TextEdit{
+                                id:_minuteEditBottom
+                                text:"00"
+                                height: parent.height
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            Text{
+                                text:":"
+                                height: parent.height
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            TextEdit{
+                                id:_secondEditBottom
+                                text:"00"
+                                height: parent.height
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            ColumnLayout{
+                                height: parent.height
+                                Button{
+                                    topPadding: 10
+                                    implicitWidth:10
+                                    implicitHeight:10
+                                    id:_forwardBottom
+                                    onClicked:Controller.addTime(_hourEditBottom,_minuteEditBottom,_secondEditBottom)
+                                }
+                                Button{
+                                    implicitWidth:10
+                                    implicitHeight:10
+                                    id:_backwardBottom
+                                    onClicked:Controller. reduceTime(_hourEditBottom,_minuteEditBottom,_secondEditBottom)
+                                }
+                            }
+                        }
+
+                    }
+
                 }
             }
         }
@@ -84,32 +293,32 @@ Item {
                 }
             }
             Label {
-                 width:parent.width*0.1
-                 height: parent.height
-                 x:parent.width*0.51
-                 text: "当前时间："
-                 verticalAlignment: Text.AlignVCenter
+                width:parent.width*0.1
+                height: parent.height
+                x:parent.width*0.51
+                text: "当前时间："
+                verticalAlignment: Text.AlignVCenter
             }
             Label {
-                 width:parent.width*0.1
-                 height: parent.height
-                 x:parent.width*0.6
-                 text: Controller.formatTime(player.position)
-                 verticalAlignment: Text.AlignVCenter
+                width:parent.width*0.1
+                height: parent.height
+                x:parent.width*0.6
+                text: Controller.formatTime(player.position)
+                verticalAlignment: Text.AlignVCenter
             }
             Label {
-                 width:parent.width*0.1
-                 height: parent.height
-                 x:parent.width*0.71
-                 text: "总时长："
-                 verticalAlignment: Text.AlignVCenter
+                width:parent.width*0.1
+                height: parent.height
+                x:parent.width*0.71
+                text: "总时长："
+                verticalAlignment: Text.AlignVCenter
             }
             Label {
-                 width:parent.width*0.1
-                 height: parent.height
-                 x:parent.width*0.8
-                 text: Controller.formatTime(player.duration)
-                 verticalAlignment: Text.AlignVCenter
+                width:parent.width*0.1
+                height: parent.height
+                x:parent.width*0.8
+                text: Controller.formatTime(player.duration)
+                verticalAlignment: Text.AlignVCenter
             }
         }
         Rectangle{

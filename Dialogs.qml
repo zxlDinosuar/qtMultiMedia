@@ -4,12 +4,16 @@ import QtCore
 Item {
     property alias fileOpen: _fileOpen
     property alias about: _about
+    property alias tipDialoghigh:_tipDialoghigh
+    property alias tipDialoglow:_tipDialoglow
+    property alias tipDialoglowminutes:_tipDialoglowminutes
+    property alias tipDialoglowhours:_tipDialoglowhour
+
 
     FileDialog {
             id: _fileOpen
             title: "Select some song files"
             fileMode: FileDialog.OpenFiles
-
             currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
             nameFilters: [ "video files (*.mp4)" ]
         }
@@ -26,12 +30,24 @@ Item {
         id:_tipDialoglow
         modality: Qt.WindowModal
         buttons:MessageDialog.Ok
-        text:"当前时间已经为00000,不能减小"
+        text:"当前时间已经为000000,不能减小"
+    }
+    MessageDialog{
+        id:_tipDialoglowhour
+        modality: Qt.WindowModal
+        buttons:MessageDialog.Ok
+        text:"当前小时已经为00,不能减小"
+    }
+    MessageDialog{
+        id:_tipDialoglowminutes
+        modality: Qt.WindowModal
+        buttons:MessageDialog.Ok
+        text:"当前小时分钟已经为0000,不能减小"
     }
     MessageDialog{
         id:_tipDialoghigh
         modality: Qt.WindowModal
         buttons:MessageDialog.Ok
-        text:"当前时间已经为视频的最长时间，不能增加"
+        text:"当前不能增加"
     }
 }

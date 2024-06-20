@@ -20,6 +20,7 @@ Item {
     Rectangle{//left
         width: parent.width*0.7
         height:parent.height
+        // property int  flags
         Rectangle{
             width:parent.width
             height:parent.height*0.5
@@ -44,10 +45,6 @@ Item {
                     Keys.onLeftPressed: player.position = player.position - 5000
                     Keys.onRightPressed: player.position = player.position + 5000
                 }
-
-                // TapHandler {
-                //     onTapped: myvideoOutput.focus = true
-                // }
             }
             Rectangle{
                 width:parent.width*0.5
@@ -60,7 +57,7 @@ Item {
                     height:parent.height*0.5
                     RowLayout{
                         id:_cutStart
-                        focus: true
+                        property int  flags
                         width:parent.width
                         height:parent.height/4
                         Label
@@ -73,18 +70,22 @@ Item {
                         }
                         //实现QTimeEdit相似的功能
                         RowLayout{
-                            focus: true
                             x:parent.width/10
                             width:parent.width*0.9
                             height: parent.height
+                            focus: true
                             TextInput{
                                 id:_hourEditTop
                                 text:"00"
                                 height: parent.height
                                 verticalAlignment: Text.AlignVCenter
                                 TapHandler{
-                                    onTapped:flags=0
+                                    onTapped:{
+                                        _cutStart.flags=0;
+                                    }
                                 }
+                                //^表示开始，$表示结束，只能输入0-24
+                                validator: RegularExpressionValidator { regularExpression: /^([01]?[0-9]|2[0-4])$/}
                             }
                             Text{
                                 text:":"
@@ -92,28 +93,32 @@ Item {
                                 verticalAlignment: Text.AlignVCenter
                             }
 
-                            TextEdit{
+                            TextInput{
                                 id:_minuteEditTop
                                 text:"00"
                                 height: parent.height
                                 verticalAlignment: Text.AlignVCenter
                                 TapHandler{
-                                    onTapped:flags=1
+                                    onTapped:_cutStart.flags=1
                                 }
+                                //^表示开始，$表示结束，只能输入0-60
+                                validator: RegularExpressionValidator { regularExpression: /^([0-6]?[0-9])$/}
                             }
                             Text{
                                 text:":"
                                 height: parent.height
                                 verticalAlignment: Text.AlignVCenter
                             }
-                            TextEdit{
+                            TextInput{
                                 id:_secondEditTop
                                 text:"00"
                                 height: parent.height
                                 verticalAlignment: Text.AlignVCenter
                                 TapHandler{
-                                    onTapped:flags=2
+                                    onTapped:_cutStart.flags=2
                                 }
+                                //^表示开始，$表示结束，只能输入0-60
+                                validator: RegularExpressionValidator { regularExpression: /^([0-6]?[0-9])$/}
                             }
                             ColumnLayout{
                                 height: parent.height
@@ -122,18 +127,21 @@ Item {
                                     implicitWidth:10
                                     implicitHeight:10
                                     id:_forwardTop
-                                    onClicked:Controller.addTime(_hourEditTop,_minuteEditTop,_secondEditTop,flags)
+                                    onClicked:Controller.addTime(_hourEditTop,_minuteEditTop,_secondEditTop,_cutStart.flags)
                                 }
                                 Button{
                                     implicitWidth:10
                                     implicitHeight:10
                                     id:_backwardTop
-                                    onClicked: Controller.reduceTime(_hourEditTop,_minuteEditTop,_secondEditTop,flags)
+                                    onClicked: Controller.reduceTime(_hourEditTop,_minuteEditTop,_secondEditTop,_cutStart.flags)
                                 }
                             }
                         }
                     }
                     RowLayout{
+                        id:_cutEnd
+                        property int  flags
+                        focus: true
                         y:parent.height/4
                         width:parent.width
                         height:parent.height/4
@@ -151,11 +159,16 @@ Item {
                             x:parent.width/10
                             width:parent.width*0.9
                             height: parent.height
-                            TextEdit{
+                            TextInput{
                                 id:_hourEditCenter
                                 text:"00"
                                 height: parent.height
                                 verticalAlignment: Text.AlignVCenter
+                                //^表示开始，$表示结束，只能输入0-24
+                                validator: RegularExpressionValidator { regularExpression: /^([01]?[0-9]|2[0-4])$/}
+                                TapHandler{
+                                    onTapped:_cutEnd.flags=0
+                                }
                             }
                             Text{
                                 text:":"
@@ -163,22 +176,32 @@ Item {
                                 verticalAlignment: Text.AlignVCenter
                             }
 
-                            TextEdit{
+                            TextInput{
                                 id:_minuteEditCenter
                                 text:"00"
                                 height: parent.height
                                 verticalAlignment: Text.AlignVCenter
+                                //^表示开始，$表示结束，只能输入0-60
+                                validator: RegularExpressionValidator { regularExpression: /^([0-6]?[0-9])$/}
+                                TapHandler{
+                                    onTapped:_cutEnd.flags=1
+                                }
                             }
                             Text{
                                 text:":"
                                 height: parent.height
                                 verticalAlignment: Text.AlignVCenter
                             }
-                            TextEdit{
+                            TextInput{
                                 id:_secondEditCenter
                                 text:"00"
                                 height: parent.height
                                 verticalAlignment: Text.AlignVCenter
+                                //^表示开始，$表示结束，只能输入0-60
+                                validator: RegularExpressionValidator { regularExpression: /^([0-6]?[0-9])$/}
+                                TapHandler{
+                                    onTapped:_cutEnd.flags=2
+                                }
                             }
                             ColumnLayout{
                                 height: parent.height
@@ -187,13 +210,13 @@ Item {
                                     implicitWidth:10
                                     implicitHeight:10
                                     id:_forwardCenter
-                                    onClicked:Controller.addTime(_hourEditCenter,_minuteEditCenter,_secondEditCenter)
+                                    onClicked:Controller.addTime(_hourEditCenter,_minuteEditCenter,_secondEditCenter,_cutEnd.flags)
                                 }
                                 Button{
                                     implicitWidth:10
                                     implicitHeight:10
                                     id:_backwardCenter
-                                    onClicked: Controller.reduceTime(_hourEditCenter,_minuteEditCenter,_secondEditCenter)
+                                    onClicked: Controller.reduceTime(_hourEditCenter,_minuteEditCenter,_secondEditCenter,_cutEnd.flags)
                                 }
                             }
                         }
@@ -207,6 +230,9 @@ Item {
                     height:parent.height/2
                     y:parent.height/2
                     RowLayout{
+                        id:_split
+                        property int  flags
+                        focus: true
                         width:parent.width
                         height:parent.height/4
                         Label
@@ -223,11 +249,16 @@ Item {
                             x:parent.width/10
                             width:parent.width*0.9
                             height: parent.height
-                            TextEdit{
+                            TextInput{
                                 id:_hourEditBottom
                                 text:"00"
                                 height: parent.height
                                 verticalAlignment: Text.AlignVCenter
+                                //^表示开始，$表示结束，只能输入0-24
+                                validator: RegularExpressionValidator { regularExpression: /^([01]?[0-9]|2[0-4])$/}
+                                TapHandler{
+                                    onTapped:_split.flags=0
+                                }
                             }
                             Text{
                                 text:":"
@@ -235,22 +266,32 @@ Item {
                                 verticalAlignment: Text.AlignVCenter
                             }
 
-                            TextEdit{
+                            TextInput{
                                 id:_minuteEditBottom
                                 text:"00"
                                 height: parent.height
                                 verticalAlignment: Text.AlignVCenter
+                                //^表示开始，$表示结束，只能输入0-60
+                                validator: RegularExpressionValidator { regularExpression: /^([0-6]?[0-9])$/}
+                                TapHandler{
+                                    onTapped:_split.flags=1
+                                }
                             }
                             Text{
                                 text:":"
                                 height: parent.height
                                 verticalAlignment: Text.AlignVCenter
                             }
-                            TextEdit{
+                            TextInput{
                                 id:_secondEditBottom
                                 text:"00"
                                 height: parent.height
                                 verticalAlignment: Text.AlignVCenter
+                                //^表示开始，$表示结束，只能输入0-60
+                                validator: RegularExpressionValidator { regularExpression: /^([0-6]?[0-9])$/}
+                                TapHandler{
+                                    onTapped:_split.flags=2
+                                }
                             }
                             ColumnLayout{
                                 height: parent.height
@@ -259,13 +300,13 @@ Item {
                                     implicitWidth:10
                                     implicitHeight:10
                                     id:_forwardBottom
-                                    onClicked:Controller.addTime(_hourEditBottom,_minuteEditBottom,_secondEditBottom)
+                                    onClicked:Controller.addTime(_hourEditBottom,_minuteEditBottom,_secondEditBottom,_split.flags)
                                 }
                                 Button{
                                     implicitWidth:10
                                     implicitHeight:10
                                     id:_backwardBottom
-                                    onClicked:Controller. reduceTime(_hourEditBottom,_minuteEditBottom,_secondEditBottom)
+                                    onClicked:Controller. reduceTime(_hourEditBottom,_minuteEditBottom,_secondEditBottom,_split.flags)
                                 }
                             }
                         }
@@ -418,7 +459,7 @@ Item {
 
     Component.onCompleted: {
         filesModel.clear()
-        Controller.initial()
+        //Controller.initial()
     }
 }
 

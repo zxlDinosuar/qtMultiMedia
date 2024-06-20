@@ -17,25 +17,37 @@ function formatTime(seconds) {
     return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 }
 
-function reduceTime(hourEdit, minuteEdit, secondEdit,flag) {
+function reduceTime() {
 
-    //arguments[0] == 传递进来的第一个参数
+    //arguments[0] === hourEdit
+    //arguments[1] === minuteEdit
+    //arguments[2] === secondEdit
+    //arguments[3] === flags
     // 获取当前时间并转换为整数
-    var hours = parseInt(hourEdit.text, 10);
-    var minutes = parseInt(minuteEdit.text, 10);
-    var seconds = parseInt(secondEdit.text, 10);
+    var hours = parseInt(arguments[0].text, 10);
+    var minutes = parseInt(arguments[1].text, 10);
+    var seconds = parseInt(arguments[2].text, 10);
     // 当前时间为0时，弹出消息对话框并退出函数
     if(hours === 0 && minutes === 0 && seconds === 0) {
-        content.dialogs.tipDialoglow.open();
+        contents.dialogs.tipDialoglow.open();
         return; // 退出函数
     }
-
     var time = hours*3600 + minutes*60 + seconds;
 
-    if(flag === 0){
-        time -= 3600
-    }else if(flag === 1){
-        time -= 60
+    if(arguments[3] === 0){
+        if(hours===0)
+        {
+            contents.dialogs.tipDialoglowhours.open();
+        }
+        else{
+            time -= 3600
+        }
+    }else if(arguments[3] === 1){
+        if(minutes===0&&hours===0)
+        {
+            contents.dialogs.tipDialoglowminutes.open();
+        }
+        else{time -= 60}
     }else {
         time -= 1
     }
@@ -47,36 +59,42 @@ function reduceTime(hourEdit, minuteEdit, secondEdit,flag) {
     console.log("seconds:", seconds)
 
     // 更新时间并格式化为两位数
-    hourEdit.text = hours.toString().padStart(2, '0');
-    minuteEdit.text = minutes.toString().padStart(2, '0');
-    secondEdit.text = seconds.toString().padStart(2, '0');
+    arguments[0].text = hours.toString().padStart(2, '0');
+    arguments[1].text = minutes.toString().padStart(2, '0');
+    arguments[2].text = seconds.toString().padStart(2, '0');
 }
 
-function addTime(hourEdit, minuteEdit, secondEdit,flag)
-{
-    // 获取当前时间并转换为整数
-    let hours = parseInt(hourEdit.text, 10);
-    console.log("hours:", hours)
-    let minutes = parseInt(minuteEdit.text, 10);
-     console.log("minutes:", minutes)
-    let seconds = parseInt(secondEdit.text, 10);
-     console.log("seconds:", seconds)
+function addTime() {
 
-    // 当前时间为最大时，弹出消息对话框并退出函数
-    if(hours === 24 && minutes === 60 && seconds === 60) {
-        content.dialogs.tipDialoghigh.open();
+    //arguments[0] === hourEdit
+    //arguments[1] === minuteEdit
+    //arguments[2] === secondEdit
+    //arguments[3] === flags
+    // 获取当前时间并转换为整数
+    var hours = parseInt(arguments[0].text, 10);
+    var minutes = parseInt(arguments[1].text, 10);
+    var seconds = parseInt(arguments[2].text, 10);
+    var maxtime=24*3600
+    var time = hours*3600 + minutes*60 + seconds;
+
+    if(time===maxtime) {
+        contents.dialogs.tipDialoghigh.open();
         return; // 退出函数
     }
-    let time = hours*3600 + minutes*60 + seconds;
 
-    if(flag === 0){
+    if(arguments[3] === 0){
         time += 3600
-    }else if(flag === 1){
-        time += 60
+    }else if(arguments[3] === 1){
+            time += 60
     }else {
         time += 1
     }
-    // hours = time/3600;
+    if(time>maxtime)
+    {
+        contents.dialogs.tipDialoghigh.open();
+        return; // 退出函数
+    }
+
     hours = Math.floor(time/3600)
     console.log("hours:", hours)
     minutes = Math.floor((time -hours*3600)/60);
@@ -85,10 +103,9 @@ function addTime(hourEdit, minuteEdit, secondEdit,flag)
     console.log("seconds:", seconds)
 
     // 更新时间并格式化为两位数
-    hourEdit.text = hours.toString().padStart(2, '0');
-    minuteEdit.text = minutes.toString().padStart(2, '0');
-    secondEdit.text = seconds.toString().padStart(2, '0');
-
+    arguments[0].text = hours.toString().padStart(2, '0');
+    arguments[1].text = minutes.toString().padStart(2, '0');
+    arguments[2].text = seconds.toString().padStart(2, '0');
 }
 
 

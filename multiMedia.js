@@ -1,21 +1,12 @@
-function setFilesModel(selectedFiles){
+function setFilesModel(selectedFiles,Model,list){
     for(var i = 0; i < selectedFiles.length; i++){
         var filePath = selectedFiles[i]
         var data = {
             "filePath": filePath
         };
-        filesModel.append(data);
+        Model.append(data);
     }
-    videoList.currentIndex = 0;//currentIndex equals to -1 default,so it must be set to  0
-}
-
-function setmergefilesModel(){
-    console.log(arguments[0])
-    var data={
-        "mergefilePath":arguments[0]
-    };
-    arguments[1].append(data);
-    arguments[2].currentIndex=0;
+    list.currentIndex = 0;//currentIndex equals to -1 default,so it must be set to  0
 }
 
 function formatTime(seconds) {
@@ -24,28 +15,6 @@ function formatTime(seconds) {
     var m = Math.floor((times % 3600) / 60);
     var s = Math.floor(times % 60);
     return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-}
-
-function setmergefilesModel(){
-    console.log(arguments[0])
-    var data={
-        "mergefilePath":arguments[0]
-    };
-    arguments[1].append(data);
-    arguments[2].currentIndex=0;
-}
-
-function addtoVideoList(){
-    // 使用 Qt.url() 将字符串转换为 Url 类型
-    var url = Qt.url(arguments[0]);
-    var data={
-        "filePath":url
-    };
-    arguments[1].append(data);
-}
-
-function exit_singleView(){
-    singlePic.visible = false;
 }
 
 function reduceTime() {
@@ -110,13 +79,13 @@ function addTime() {
 
     if(time===maxtime) {
         contents.dialogs.tipDialoghigh.open();
-        return; // 退出函数
+        return; // 退出
     }
 
     if(arguments[3] === 0){
         time += 3600
     }else if(arguments[3] === 1){
-            time += 60
+        time += 60
     }else {
         time += 1
     }
@@ -138,27 +107,43 @@ function addTime() {
     arguments[1].text = minutes.toString().padStart(2, '0');
     arguments[2].text = seconds.toString().padStart(2, '0');
 }
-function setFileModel(){
+function setFileModel(compenment,Model,list){
     // 清理数据模型相当于清理了原来存储的路径
-    video_fileModel.clear()
+    //video_fileModel.clear()
     for(let i=0;i<arguments[0].length;i++){
         let data={"filePath":arguments[0][i]}
         // 将数据成员加入到模块之中
         console.log(arguments[0][i])
-        video_fileModel.append(data)
-
+        Model.append(data)
     }
-    multiPics.model=video_fileModel
-    multiPics.currentIndex=0
+    list.model=Model
+    list.currentIndex=0
 }
-function singleView(){
-   singlePic.visible = true;
-   singlePic.z = 1;
-  singlePic.focus=true;
-    console.log("in singleview")
-    console.log(multiPics.currentIndex)
-    console.log(singlePic.source)
-    console.log(multiPics.currentItem.source)
+function singleView(compenment){
+    compenment.visible = true;
+    compenment.z = 1;
+    compenment.focus=true;
+    // console.log("in singleview")
+    // console.log(multiPics.currentIndex)
+    // console.log(singlePic.source)
+    // console.log(multiPics.currentItem.source)
 }
+function exit_singleView(compenment){
+    compenment.visible = false;
+}
+function addmoreView(Layout,compenment){
+    Layout.visible=true
+    console.log("ok")
+    //console.log()
+    console.log(compenment.currentItem.x)
+    Layout.x=compenment.currentItem.x
+    Layout.y=compenment.currentItem.y+100
+}
+function  del(index,Model) {
+    if (typeof index === 'number' && index >= 0) {
+        Model.remove(index);
+    } else {
+        console.error("Invalid index: ", index);
+    }
 
-
+}

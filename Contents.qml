@@ -24,8 +24,8 @@ Item {
 
     Dialogs {
         id:_allDialogs
-        fileOpen.onAccepted: Controller.setFilesModel(fileOpen.selectedFiles)
-        fileOpen1.onAccepted: Controller.setFileModel(fileOpen1.selectedFiles)
+        fileOpen.onAccepted: Controller.setFilesModel(fileOpen.selectedFiles,filesModel,videoList)
+        fileOpen1.onAccepted: Controller.setFileModel(fileOpen1.selectedFiles,video_fileModel,multiPics)
     }
 
     Connections {
@@ -306,14 +306,48 @@ Item {
                             onTapped: {
                                 multiPics.currentIndex = index
                                 console.log("currentIndex in multiPics: ", multiPics.currentIndex)
-                                Controller.singleView()
+                               Controller.singleView(singlePic)
+                            }
+                        }
+                        TapHandler{
+                            id:rightclick
+                            acceptedButtons: Qt.RightButton
+                            onTapped:
+                            {
+                                multiPics.currentIndex = index
+                                Controller.addmoreView(add,multiPics)
+                            }
+                        }
+                    }
+
+                }
+                ColumnLayout
+                {
+                    id:add
+                    visible:false
+
+                    Button {
+                        text: "删除"
+                        onClicked: add.visible = false
+                        TapHandler{
+                            id:halo
+                            onTapped: {
+                              Controller.del(multiPics.currentIndex,video_fileModel);
                             }
                         }
 
                     }
+                    Button {
+                        text: "添加到视频左上角"
+                        onClicked: add.visible = false
+                    }
+                    Button {
+                        text: "添加到视频右上角"
+                        onClicked: add.visible = false
+                    }
+
 
                 }
-
                 Image {
                     id: singlePic
                     anchors.fill: parent
@@ -325,7 +359,7 @@ Item {
                         id:tapHandler
                         onTapped: {
                             console.log("exit")
-                            Controller.exit_singleView()
+                            Controller.exit_singleView(singlePic)
                         }
                     }
                 }

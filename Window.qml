@@ -37,6 +37,9 @@ ApplicationWindow{
     Actions{
         id:actions
         open.onTriggered: contents.dialogs.fileOpen.open()
+        cut.onTriggered:console.log("zzxxzxz")
+        addPicture.onTriggered:contents.dialogs.fileOpen1.open()
+        exit.onTriggered:Qt.quit()
     }
 
     Contents{

@@ -107,5 +107,27 @@ function addTime() {
     arguments[1].text = minutes.toString().padStart(2, '0');
     arguments[2].text = seconds.toString().padStart(2, '0');
 }
+function setFileModel(){
+    // 清理数据模型相当于清理了原来存储的路径
+    video_fileModel.clear()
+    for(let i=0;i<arguments[0].length;i++){
+        let data={"filePath":arguments[0][i]}
+        // 将数据成员加入到模块之中
+        console.log(arguments[0][i])
+        video_fileModel.append(data)
+
+    }
+    multiPics.model=video_fileModel
+    multiPics.currentIndex=0
+}
+function singleView(){
+   singlePic.visible = true;
+   singlePic.z = 1;
+  singlePic.focus=true;
+    console.log("in singleview")
+    console.log(multiPics.currentIndex)
+    console.log(singlePic.source)
+    console.log(multiPics.currentItem.source)
+}
 
 

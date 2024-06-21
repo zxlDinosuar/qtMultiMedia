@@ -8,15 +8,15 @@ Item {
     property alias tipDialoglow:_tipDialoglow
     property alias tipDialoglowminutes:_tipDialoglowminutes
     property alias tipDialoglowhours:_tipDialoglowhour
-
+    property alias fileOpen1: _fileOpen1
 
     FileDialog {
-            id: _fileOpen
-            title: "Select some song files"
-            fileMode: FileDialog.OpenFiles
-            currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
-            nameFilters: [ "video files (*.mp4 *.avi *.mkv)" ]
-        }
+        id: _fileOpen
+        title: "Select some song files"
+        fileMode: FileDialog.OpenFiles
+        currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+        nameFilters: [ "video files (*.mp4 *.avi *.mkv)" ]
+    }
 
     MessageDialog{
         id:_about
@@ -49,5 +49,13 @@ Item {
         modality: Qt.WindowModal
         buttons:MessageDialog.Ok
         text:"当前不能增加"
+    }
+    FileDialog {
+        id: _fileOpen1
+        title: "Select some picture files"
+        fileMode: FileDialog.OpenFiles
+
+        currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+        nameFilters: [ "Image files (*.png *.jpeg *.jpg)" ]
     }
 }

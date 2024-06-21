@@ -16,6 +16,7 @@ Item {
     Dialogs {
         id:_allDialogs
         fileOpen.onAccepted: Controller.setFilesModel(fileOpen.selectedFiles)
+        fileOpen1.onAccepted: Controller.setFileModel(fileOpen1.selectedFiles)
     }
 
     MediaDate {
@@ -389,8 +390,68 @@ Item {
             Rectangle{
                 width:parent.width
                 height:parent.height*0.9
-                color: "black"
+                color: "white"
                 y:parent.height*0.1
+
+                GridView{
+                    id:multiPics
+                    anchors.fill: parent
+                    // fillMode 设置为 Image.PreserveAspectFit 时，
+                    // 图片会保持其原始的宽高比，同时尽可能大地填充可用空间，
+                    // 而不会超出矩形的边界。
+                    // Image.Stretch：拉伸图像以填充可用空间，不考虑宽高比，可能导致图像失真。
+                    // Image.PreserveAspectCrop：保持图像的宽高比，但是可能会裁剪图像的某些部分以确保图像完全填充可用空间。
+                    // Image.Tile：平铺图像以填充可用空间。
+                    property int fillMode: Image.PreserveAspectFit
+                    // 数据模型负责存储和组织数据，而视图则负责展示这些数据
+                    ListModel{
+                        id:video_fileModel
+                    }
+                    // delegate 是一个QML组件，它负责将数据模型中的数据以某种形式展示出来。
+                    delegate: imageDelegate
+
+                }
+                Component{
+                    id:imageDelegate
+                    Image {
+                        // 加载每一张图片6+
+                        id:image
+                        // 每个网格的宽度和高度减10作为图片的显示高度和宽度
+                        width: multiPics.cellWidth-10
+                        height: multiPics.cellHeight-10
+                        // 指图片如何填充可用空间
+                        fillMode:multiPics.fillMode
+                        // asynchronous: true 属性通常与图像加载相关，特别是在使用 Image 类型时。当 asynchronous 属性设置为 true 时，
+                        // 图像的加载将在一个单独的线程中进行，
+                        // 这意味着图像加载不会阻塞主线程，
+                        asynchronous: true
+                        // 所有的路径对应的都是filePath因此可以使用直接显示所有的图片
+                        source: filePath
+                        TapHandler{
+                            id:tapHandler
+                            onTapped: {
+                                multiPics.currentIndex = index
+                                console.log("currentIndex in multiPics: ", multiPics.currentIndex)
+                                Controller.singleView()
+                            }
+                        }
+
+                    }
+
+                }
+
+                Image {
+                    id: singlePic
+                    anchors.fill: parent
+                    source: multiPics.currentItem.source
+                    z:-1
+                    visible: false
+
+
+                }
+
+
+
             }
         }
     }

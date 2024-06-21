@@ -1,4 +1,5 @@
 #include "mediadate.h"
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QProcess>
@@ -7,6 +8,11 @@
 MediaDate::MediaDate(QObject *parent)
     : QObject{parent}
 {
+    QDir directory = QFileInfo(inputPath).dir();
+
+    if (!directory.exists()) {
+        directory.mkpath(directory.path()); // 创建所有必需的父目录
+    }
     //每次运行前都首先清空用于合并视频的txt文件
     QFile file(combPath); //用于合并视频的文件
     file.open(QFile::WriteOnly | QFile::Truncate);

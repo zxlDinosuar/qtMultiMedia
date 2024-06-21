@@ -13,6 +13,7 @@ Item {
     property alias addSubtitles:_addSubtitles
     property alias clearVideolist:_clearVideolist
     property alias clearMergelist:_clearMergelist
+    property alias addMergelistfromVideolist:_addMergelistfromVideolist
 
 
     Action {
@@ -72,6 +73,10 @@ Item {
         id: _clearMergelist
         text: qsTr("清空合并列表")
         //icon.name: "application-exit"
+    }
+    Action{
+       id:_addMergelistfromVideolist
+       text:qsTr("从视频列表添加到合并列表")
     }
 
 }

@@ -34,7 +34,8 @@ qt_add_qml_module(
   Footer.qml
   SOURCES
   mediadate.h
-  mediadate.cpp)
+  mediadate.cpp
+  QML_FILES TimeEdit.qml)
 
 target_compile_features(appmultiMedia PRIVATE cxx_std_20)
 

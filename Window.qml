@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import "multiMedia.js" as Controller
 
 ApplicationWindow{
     id:mainWindow
@@ -31,12 +32,14 @@ ApplicationWindow{
             ToolButton{ action: actions.addSubtitles }//添加字幕
             ToolButton{ action: actions.clearVideolist }//清空视频列表
             ToolButton{ action: actions.clearMergelist }//清空合并列表
+            ToolButton{ action: actions.addMergelistfromVideolist }//从视频列表添加到合并列表
         }
     }
 
     Actions{
         id:actions
         open.onTriggered: contents.dialogs.fileOpen.open()
+        addMergelistfromVideolist.onTriggered: Controller.setmergefilesModel(contents.videoList.currentItem.filepath,contents.mergefilesModel,contents.mergeVideoList)
         cut.onTriggered:{
             console.log(contents.cutStart.starttime)
             console.log(contents.cutEnd.endTime)

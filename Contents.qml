@@ -9,6 +9,8 @@ Item {
     property alias dialogs: _allDialogs
     property alias player: _player
     property alias videoList: _videoList
+    property alias mergeVideoList: _mergeVideolist
+    property alias mergefilesModel:_mergefilesModel
     property alias mediaDate:_mediaDate
     property alias audioOutput: _audioOutput
     property alias progressSlider:_progressSlider
@@ -58,189 +60,75 @@ Item {
                     Keys.onRightPressed: player.position = player.position + 5000
                 }
             }
-            Rectangle{
+            Rectangle{//timeEdit
                 width:parent.width*0.5
                 height:parent.height
                 x:parent.width*0.5
                 Rectangle{
                     id:_leftTop_right_top
+                    // property int flag
                     width:parent.width
                     height:parent.height*0.5
-                    RowLayout{
+                    Rectangle{
                         id:_cutStart
                         property int  flags
-                        property string  starttime //用于存储剪切开始时间的字符串
-                        starttime: _hourEditTop.text+":"+_minuteEditTop.text+":"+_secondEditTop.text
                         width:parent.width
                         height:parent.height/4
-                        Label
-                        {
-                            width:parent.width/10
+                        Rectangle{
+                            width:parent.width*0.3
                             height: parent.height
-                            text:"剪切开始："
-                            color:"black"
-                            leftPadding: parent.width/8
+                            Label
+                            {
+                                width:parent.width
+                                height: parent.height
+                                text:"剪切开始："
+                                color:"black"
+                                leftPadding: parent.width/2
+                                //topPadding: parent.width/7
+                                verticalAlignment: Text.AlignVCenter
+                            }
                         }
                         //实现QTimeEdit相似的功能
-                        RowLayout{
-                            x:parent.width/10
-                            width:parent.width*0.9
-                            height: parent.height
-                            focus: true
-                            TextInput{
-                                id:_hourEditTop
-                                text:"00"
-                                height: parent.height
-                                verticalAlignment: Text.AlignVCenter
-                                TapHandler{
-                                    onTapped:{
-                                        _cutStart.flags=0;
-                                    }
-                                }
-                                //^表示开始，$表示结束，只能输入0-24
-                                validator: RegularExpressionValidator { regularExpression: /^([01]?[0-9]|2[0-4])$/}
-                            }
-                            Text{
-                                text:":"
-                                height: parent.height
-                                verticalAlignment: Text.AlignVCenter
-                            }
-                            TextInput{
-                                id:_minuteEditTop
-                                text:"00"
-                                height: parent.height
-                                verticalAlignment: Text.AlignVCenter
-                                TapHandler{
-                                    onTapped:_cutStart.flags=1
-                                }
-                                //^表示开始，$表示结束，只能输入0-60
-                                validator: RegularExpressionValidator { regularExpression: /^([0-6]?[0-9])$/}
-                            }
-                            Text{
-                                text:":"
-                                height: parent.height
-                                verticalAlignment: Text.AlignVCenter
-                            }
-                            TextInput{
-                                id:_secondEditTop
-                                text:"00"
-                                height: parent.height
-                                verticalAlignment: Text.AlignVCenter
-                                TapHandler{
-                                    onTapped:_cutStart.flags=2
-                                }
-                                //^表示开始，$表示结束，只能输入0-60
-                                validator: RegularExpressionValidator { regularExpression: /^([0-6]?[0-9])$/}
-                            }
-                            ColumnLayout{
-                                height: parent.height
-                                Button{
-                                    topPadding: 10
-                                    implicitWidth:10
-                                    implicitHeight:10
-                                    id:_forwardTop
-                                    onClicked:{
-                                        Controller.addTime(_hourEditTop,_minuteEditTop,_secondEditTop,_cutStart.flags);
-                                        cutStart.starttime =_hourEditTop.text+":"+_minuteEditTop.text+":"+_secondEditTop.text;
-                                    }
-                                }
-                                Button{
-                                    implicitWidth:10
-                                    implicitHeight:10
-                                    id:_backwardTop
-                                    onClicked: {
-                                        Controller.reduceTime(_hourEditTop,_minuteEditTop,_secondEditTop,_cutStart.flags);
-                                        cutStart.starttime = _hourEditTop.text+":"+_minuteEditTop.text+":"+_secondEditTop.text;
-                                    }
-                                }
+                        Rectangle{
+                            width:parent.width*0.7
+                            height:parent.height
+                            x:parent.width*0.55
+                            TimeEdit{
+                                width:parent.width
+                                height:parent.height
                             }
                         }
                     }
-                    RowLayout{
+                    Rectangle{
                         id:_cutEnd
                         property int  flags
-                        property string endTime//剪切结束时间
-                        endTime:_hourEditCenter.text+":"+_minuteEditCenter.text+":"+_secondEditCenter.text
+                        focus: true
                         y:parent.height/4
                         width:parent.width
                         height:parent.height/4
-                        Label
-                        {
-                            width:parent.width/10
+                        Rectangle{
+                            width:parent.width*0.3
                             height: parent.height
-                            text:"剪切结束："
-                            color:"black"
-                            leftPadding: parent.width/8
+                            Label
+                            {
+                                width:parent.width
+                                height: parent.height
+                                text:"剪切结束："
+                                color:"black"
+                                leftPadding: parent.width/2
+                                //topPadding: parent.width/7
+                                verticalAlignment: Text.AlignVCenter
+                            }
                         }
+
                         //实现QTimeEdit相似的功能
-                        RowLayout{
-                            focus: true
-                            x:parent.width/10
-                            width:parent.width*0.9
-                            height: parent.height
-                            TextInput{
-                                id:_hourEditCenter
-                                text:"00"
-                                height: parent.height
-                                verticalAlignment: Text.AlignVCenter
-                                //^表示开始，$表示结束，只能输入0-24
-                                validator: RegularExpressionValidator { regularExpression: /^([01]?[0-9]|2[0-4])$/}
-                                TapHandler{
-                                    onTapped:_cutEnd.flags=0
-                                }
-                            }
-                            Text{
-                                text:":"
-                                height: parent.height
-                                verticalAlignment: Text.AlignVCenter
-                            }
-                            TextInput{
-                                id:_minuteEditCenter
-                                text:"00"
-                                height: parent.height
-                                verticalAlignment: Text.AlignVCenter
-                                //^表示开始，$表示结束，只能输入0-60
-                                validator: RegularExpressionValidator { regularExpression: /^([0-6]?[0-9])$/}
-                                TapHandler{
-                                    onTapped:_cutEnd.flags=1
-                                }
-                            }
-                            Text{
-                                text:":"
-                                height: parent.height
-                                verticalAlignment: Text.AlignVCenter
-                            }
-                            TextInput{
-                                id:_secondEditCenter
-                                text:"00"
-                                height: parent.height
-                                verticalAlignment: Text.AlignVCenter
-                                //^表示开始，$表示结束，只能输入0-60
-                                validator: RegularExpressionValidator { regularExpression: /^([0-6]?[0-9])$/}
-                                TapHandler{
-                                    onTapped:_cutEnd.flags=2
-                                }
-                            }
-                            ColumnLayout{
-                                height: parent.height
-                                Button{
-                                    topPadding: 10
-                                    implicitWidth:10
-                                    implicitHeight:10
-                                    id:_forwardCenter
-                                    onClicked:{
-                                        Controller.addTime(_hourEditCenter,_minuteEditCenter,_secondEditCenter,_cutEnd.flags);
-                                        cutEnd.endTime = _hourEditCenter.text+":"+_minuteEditCenter.text+":"+_secondEditCenter.text;
-                                    }
-                                }
-                                Button{
-                                    implicitWidth:10
-                                    implicitHeight:10
-                                    id:_backwardCenter
-                                    onClicked: {Controller.reduceTime(_hourEditCenter,_minuteEditCenter,_secondEditCenter,_cutEnd.flags);
-                                        cutEnd.endTime = _hourEditCenter.text+":"+_minuteEditCenter.text+":"+_secondEditCenter.text;
-                                    }
-                                }
+                        Rectangle{
+                            width:parent.width*0.7
+                            height:parent.height
+                            x:parent.width*0.55
+                            TimeEdit{
+                                width:parent.width
+                                height:parent.height
                             }
                         }
 
@@ -252,95 +140,45 @@ Item {
                     width:parent.width
                     height:parent.height/2
                     y:parent.height/2
-                    RowLayout{
+                    Rectangle{
                         id:_split
                         property int  flags
-                        property string breakTime//拆分节点时间
-                        breakTime:_hourEditBottom.text+":"+_minuteEditBottom.text+":"+_minuteEditBottom.text
+                        focus: true
                         width:parent.width
                         height:parent.height/4
-                        Label
-                        {
-                            width:parent.width/10
+                        Rectangle{
+                            width:parent.width*0.3
                             height: parent.height
-                            text:"拆分节点："
-                            color:"black"
-                            leftPadding: parent.width/8
+                            Label
+                            {
+                                width:parent.width
+                                height: parent.height
+                                text:"拆分节点："
+                                color:"black"
+                                leftPadding: parent.width/2
+                                verticalAlignment: Text.AlignVCenter
+                                //topPadding: parent.width/7
+
+                            }
                         }
+
                         //实现QTimeEdit相似的功能
-                        RowLayout{
-                            focus:true
-                            x:parent.width/10
-                            width:parent.width*0.9
-                            height: parent.height
-                            TextInput{
-                                id:_hourEditBottom
-                                text:"00"
-                                height: parent.height
-                                verticalAlignment: Text.AlignVCenter
-                                //^表示开始，$表示结束，只能输入0-24
-                                validator: RegularExpressionValidator { regularExpression: /^([01]?[0-9]|2[0-4])$/}
-                                TapHandler{
-                                    onTapped:_split.flags=0
-                                }
-                            }
-                            Text{
-                                text:":"
-                                height: parent.height
-                                verticalAlignment: Text.AlignVCenter
-                            }
-                            TextInput{
-                                id:_minuteEditBottom
-                                text:"00"
-                                height: parent.height
-                                verticalAlignment: Text.AlignVCenter
-                                //^表示开始，$表示结束，只能输入0-60
-                                validator: RegularExpressionValidator { regularExpression: /^([0-6]?[0-9])$/}
-                                TapHandler{
-                                    onTapped:_split.flags=1
-                                }
-                            }
-                            Text{
-                                text:":"
-                                height: parent.height
-                                verticalAlignment: Text.AlignVCenter
-                            }
-                            TextInput{
-                                id:_secondEditBottom
-                                text:"00"
-                                height: parent.height
-                                verticalAlignment: Text.AlignVCenter
-                                //^表示开始，$表示结束，只能输入0-60
-                                validator: RegularExpressionValidator { regularExpression: /^([0-6]?[0-9])$/}
-                                TapHandler{
-                                    onTapped:_split.flags=2
-                                }
-                            }
-                            ColumnLayout{
-                                height: parent.height
-                                Button{
-                                    topPadding: 10
-                                    implicitWidth:10
-                                    implicitHeight:10
-                                    id:_forwardBottom
-                                    onClicked:{Controller.addTime(_hourEditBottom,_minuteEditBottom,_secondEditBottom,_split.flags);
-                                        split.breakTime = _hourEditBottom.text+":"+_minuteEditBottom.text+":"+_minuteEditBottom.text;}
-                                }
-                                Button{
-                                    implicitWidth:10
-                                    implicitHeight:10
-                                    id:_backwardBottom
-                                    onClicked:{Controller. reduceTime(_hourEditBottom,_minuteEditBottom,_secondEditBottom,_split.flags)
-                                        split.breakTime=_hourEditBottom.text+":"+_minuteEditBottom.text+":"+_minuteEditBottom.text}
-                                }
+                        Rectangle{
+                            width:parent.width*0.7
+                            height:parent.height
+                            x:parent.width*0.55
+                            TimeEdit{
+                                width:parent.width
+                                height:parent.height
                             }
                         }
+
 
                     }
 
                 }
             }
-        }
+}
         Rectangle{
             width:parent.width
             height:parent.height*0.1
@@ -518,7 +356,7 @@ Item {
                         horizontalAlignment: Text.AlignLeft
                         color: videoRoot.ListView.isCurrentItem?"red":"black"
                         width: videoItem.width
-                        font.pixelSize: 18
+                        font.pixelSize: 13
                         text: filePath
                     }
 
@@ -542,9 +380,47 @@ Item {
             color:"orange"
             Label {
                 text:"合并列表（放入合并视频并点击）"
+                width: parent.width
+                height:parent.height*0.1
+            }
+            Rectangle{
+                width:parent.width
+                height:parent.height
+                y:parent.height*0.05
+                ListView{
+                    id:_mergeVideolist
+                    anchors.fill: parent
+                    model:ListModel{
+                        id:_mergefilesModel
+                    }
+                     delegate: Mergevediolist{id: mergeItem}
+                }
+                component Mergevediolist:Rectangle{
+                    id:mergeRoot
+                   property url filepath:mergefilePath
+                    width:parent.width
+                    height:20
+                    Text{
+                        verticalAlignment:Text.AlignVCenter
+                        horizontalAlignment: Text.AlignLeft
+                        color: mergeRoot.ListView.isCurrentItem?"red":"black"
+                        width:mergeItem.width
+                        font.pixelSize: 13
+                        text:filepath
+                    }
+                    TapHandler{
+                        onTapped: {
+                            _mergeVideolist.currentIndex = index
+                            player.source = _mergeVideolist.currentItem.filepath
+                            player.play()
+                            myvideoOutput.focus = true
+                            mediaDate.list_item_clicked(player.source);
+                        }
+                    }
+                }
             }
         }
-    }
+ }
 
     Component.onCompleted: {
         filesModel.clear()

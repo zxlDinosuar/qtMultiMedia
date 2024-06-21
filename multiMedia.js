@@ -17,6 +17,26 @@ function formatTime(seconds) {
     return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 }
 
+function setmergefilesModel(){
+    console.log(arguments[0])
+    var data={
+        "mergefilePath":arguments[0]
+    };
+    arguments[1].append(data);
+    arguments[2].currentIndex=0;
+}
+
+function addtoVideoList(){
+    var data={
+        "filePath":"file:///"+arguments[0]
+    };
+    arguments[1].append(data);
+}
+
+function exit_singleView(){
+    singlePic.visible = false;
+}
+
 function reduceTime() {
 
     //arguments[0] === hourEdit

@@ -24,6 +24,9 @@ Item {
 
     MediaDate {
         id:_mediaDate
+        onAddToVideoList:{(outputPath)=> {
+                Controller.addtoVideoList(outputPath, filesModel)
+            }}
     }
 
     Rectangle{//left
@@ -464,6 +467,13 @@ Item {
                     z:-1
                     visible: false
 
+                    TapHandler{
+                        id:tapHandler
+                        onTapped: {
+                            console.log("exit")
+                            Controller.exit_singleView()
+                        }
+                    }
                 }
             }
         }

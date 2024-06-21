@@ -51,7 +51,7 @@ void MediaDate::saveFile(QString savePath)
 }
 
 //剪切视频功能，需要首先设置剪切时间范围
-void MediaDate::videoEdit(QString startTime, QString lenTime)
+void MediaDate::videoEdit(QString startTime, QString endTime)
 {
     QFile sourceFile(inputPath);
     if (!sourceFile.exists()) {
@@ -67,8 +67,14 @@ void MediaDate::videoEdit(QString startTime, QString lenTime)
         outputPath = QFileInfo(sourceFile).absolutePath() + "/clip_" + QString::number(temp)
                      + ".mp4";
     }
-    QString sTime = startTime;
-    QString lTime = lenTime;
+    qDebug() << "startTime :" << startTime;
+    // QString sTime = startTime;
+    QString sTime = QUrl::fromPercentEncoding(startTime.toUtf8());
+    qDebug() << "sTime :" << sTime;
+    // QString lTime = lenTime;
+    qDebug() << "endTime :" << endTime;
+    QString lTime = QUrl::fromPercentEncoding(endTime.toUtf8());
+    qDebug() << "lTime :" << lTime;
     QStringList arguments;
     arguments << "-i" << inputPath << "-r"
               << "25"

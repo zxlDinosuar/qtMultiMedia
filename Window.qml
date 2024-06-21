@@ -40,11 +40,9 @@ ApplicationWindow{
         id:actions
         open.onTriggered: contents.dialogs.fileOpen.open()
         addMergelistfromVideolist.onTriggered: Controller.setmergefilesModel(contents.videoList.currentItem.filepath,contents.mergefilesModel,contents.mergeVideoList)
-        cut.onTriggered:{
-            console.log(contents.cutStart.starttime)
-            console.log(contents.cutEnd.endTime)
-            contents.mediaDate.videoEdit(contents.cutStart.starttime,contents.cutEnd.endTime)
-        }
+        cut.onTriggered: contents.mediaDate.videoEdit(contents.timeEdit1.times,contents.timeEdit2.times)
+        split.onTriggered: contents.mediaDate.videoBreak(contents.timeEdit3.times,contents.sliderAnddurationtime.durationtime)
+
         addPicture.onTriggered:contents.dialogs.fileOpen1.open()
         exit.onTriggered:Qt.quit()
     }

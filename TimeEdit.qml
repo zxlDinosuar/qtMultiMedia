@@ -6,6 +6,8 @@ import "multiMedia.js" as Controller
 Rectangle {
     width:parent.width
     height:parent.height
+    property string times
+    times: _hourEditTop.text+":"+_minuteEditTop.text+":"+_secondEditTop.text
     RowLayout{
         //implicitWidth: 100
         height: parent.height
@@ -69,14 +71,16 @@ Rectangle {
                 implicitWidth:10
                 implicitHeight:10
                 id:_forwardTop
-                onClicked:Controller.addTime(_hourEditTop,_minuteEditTop,_secondEditTop,_cutStart.flags)
+                onClicked:{Controller.addTime(_hourEditTop,_minuteEditTop,_secondEditTop,_cutStart.flags)
+                    times = _hourEditTop.text+":"+_minuteEditTop.text+":"+_secondEditTop.text}
             }
             Button{
                 height:parent.height/5
                 implicitWidth:10
                 implicitHeight:10
                 id:_backwardTop
-                onClicked:Controller.reduceTime(_hourEditTop,_minuteEditTop,_secondEditTop,_cutStart.flags)
+                onClicked:{Controller.reduceTime(_hourEditTop,_minuteEditTop,_secondEditTop,_cutStart.flags)
+                    times = _hourEditTop.text+":"+_minuteEditTop.text+":"+_secondEditTop.text}
             }
         }
     }

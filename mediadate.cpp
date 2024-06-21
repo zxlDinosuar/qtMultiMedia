@@ -1,4 +1,5 @@
 #include "mediadate.h"
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QProcess>
@@ -7,6 +8,12 @@
 MediaDate::MediaDate(QObject *parent)
     : QObject{parent}
 {
+    QDir directory = QFileInfo(inputPath).dir();
+
+    if (!directory.exists()) {
+        directory.mkpath(directory.path()); // 创建所有必需的父目录
+    }
+
     //每次运行前都首先清空用于合并视频的txt文件
     QFile file(combPath); //用于合并视频的文件
     file.open(QFile::WriteOnly | QFile::Truncate);
@@ -25,7 +32,6 @@ QString MediaDate::changeValue(QString inputpath)
         // 所以我们使用 QUrl::fromPercentEncoding 来解码这些字符
         path = QUrl::fromPercentEncoding(path.toUtf8());
     }
-    qDebug() << path;
     return path;
 }
 
@@ -67,14 +73,8 @@ void MediaDate::videoEdit(QString startTime, QString endTime)
         outputPath = QFileInfo(sourceFile).absolutePath() + "/clip_" + QString::number(temp)
                      + ".mp4";
     }
-    qDebug() << "startTime :" << startTime;
-    // QString sTime = startTime;
     QString sTime = QUrl::fromPercentEncoding(startTime.toUtf8());
-    qDebug() << "sTime :" << sTime;
-    // QString lTime = lenTime;
-    qDebug() << "endTime :" << endTime;
     QString lTime = QUrl::fromPercentEncoding(endTime.toUtf8());
-    qDebug() << "lTime :" << lTime;
     QStringList arguments;
     arguments << "-i" << inputPath << "-r"
               << "25"
@@ -85,7 +85,8 @@ void MediaDate::videoEdit(QString startTime, QString endTime)
     QProcess *clipProcess = new QProcess(this);
 
     clipProcess->start(program, arguments);
-    emit addToVideoList(outputPath);
+    emit addToVideoList(QUrl::fromLocalFile(outputPath));
+    // QUrl url = QUrl::fromLocalFile(outputPath);
 }
 
 //拆分视频为两个片段
@@ -105,8 +106,10 @@ void MediaDate::videoBreak(QString breakTime, QString durationTime)
         outputPath = QFileInfo(sourceFile).absolutePath() + "/break" + QString::number(temp)
                      + "_1.mp4";
     }
-    QString bTime = breakTime;
-    QString str = durationTime;
+    QString bTime = QUrl::fromPercentEncoding(breakTime.toUtf8());
+    // QString bTime = breakTime;
+    QString str = QUrl::fromPercentEncoding(durationTime.toUtf8());
+    // QString str = durationTime;
 
     QStringList arguments;
     arguments << "-i" << inputPath << "-r"
@@ -118,7 +121,7 @@ void MediaDate::videoBreak(QString breakTime, QString durationTime)
 
     QProcess *clipProcess = new QProcess(this);
     clipProcess->start(program, arguments);
-    emit addToVideoList(outputPath);
+    emit addToVideoList(QUrl::fromLocalFile(outputPath));
 
     arguments.clear();
     outputPath = QFileInfo(sourceFile).absolutePath() + "/break" + QString::number(temp) + "_2.mp4";
@@ -134,5 +137,5 @@ void MediaDate::videoBreak(QString breakTime, QString durationTime)
     QProcess *m_Process = new QProcess(this); //定义一个新的QProcess
     m_Process->start(program, arguments);
     //用信号实现
-    emit addToVideoList(outputPath);
+    emit addToVideoList(QUrl::fromLocalFile(outputPath));
 }

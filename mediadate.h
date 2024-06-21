@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QQmlEngine>
+#include <QUrl>
 #include <QtQml/qqmlregistration.h>
 
 class MediaDate : public QObject
@@ -21,7 +22,7 @@ public:
 
 signals:
     void cannotFindFile();
-    void addToVideoList(QString outputPath);
+    void addToVideoList(QUrl outputPath);
 
 private:
     QString program = "/usr/bin/ffmpeg";

@@ -14,9 +14,13 @@ Item {
     property alias mediaDate:_mediaDate
     property alias audioOutput: _audioOutput
     property alias progressSlider:_progressSlider
-    property alias cutStart: _cutStart
-    property alias cutEnd: _cutEnd
-    property alias split:_split
+    // property alias cutStart: _cutStart
+    // property alias cutEnd: _cutEnd
+    // property alias split:_split
+    property alias sliderAnddurationtime: _sliderAnddurationtime
+    property alias timeEdit1: _timeEdit1
+    property alias timeEdit2: _timeEdit2
+    property alias timeEdit3: _timeEdit3
 
     Dialogs {
         id:_allDialogs
@@ -24,11 +28,15 @@ Item {
         fileOpen1.onAccepted: Controller.setFileModel(fileOpen1.selectedFiles)
     }
 
+    Connections {
+        target: mediaDate
+        function onAddToVideoList(outputPath) {
+            Controller.addtoVideoList(Qt.url(outputPath), filesModel)
+        }
+    }
+
     MediaDate {
         id:_mediaDate
-        onAddToVideoList:{(outputPath)=> {
-                Controller.addtoVideoList(outputPath, filesModel)
-            }}
     }
 
     Rectangle{//left
@@ -82,6 +90,7 @@ Item {
                                 width:parent.width
                                 height: parent.height
                                 text:"剪切开始："
+                                // text:time1.times
                                 color:"black"
                                 leftPadding: parent.width/2
                                 //topPadding: parent.width/7
@@ -94,6 +103,7 @@ Item {
                             height:parent.height
                             x:parent.width*0.55
                             TimeEdit{
+                                id:_timeEdit1
                                 width:parent.width
                                 height:parent.height
                             }
@@ -114,6 +124,7 @@ Item {
                                 width:parent.width
                                 height: parent.height
                                 text:"剪切结束："
+                                // text:time2.times
                                 color:"black"
                                 leftPadding: parent.width/2
                                 //topPadding: parent.width/7
@@ -127,6 +138,7 @@ Item {
                             height:parent.height
                             x:parent.width*0.55
                             TimeEdit{
+                                id:_timeEdit2
                                 width:parent.width
                                 height:parent.height
                             }
@@ -168,6 +180,7 @@ Item {
                             height:parent.height
                             x:parent.width*0.55
                             TimeEdit{
+                                id:_timeEdit3
                                 width:parent.width
                                 height:parent.height
                             }
@@ -178,8 +191,11 @@ Item {
 
                 }
             }
-}
+        }
         Rectangle{
+            id:_sliderAnddurationtime
+            property string durationtime//用于存储总时间
+            durationtime: Controller.formatTime(player.duration)
             width:parent.width
             height:parent.height*0.1
             y:parent.height*0.5
@@ -393,11 +409,11 @@ Item {
                     model:ListModel{
                         id:_mergefilesModel
                     }
-                     delegate: Mergevediolist{id: mergeItem}
+                    delegate: Mergevediolist{id: mergeItem}
                 }
                 component Mergevediolist:Rectangle{
                     id:mergeRoot
-                   property url filepath:mergefilePath
+                    property url filepath:mergefilePath
                     width:parent.width
                     height:20
                     Text{
@@ -420,7 +436,7 @@ Item {
                 }
             }
         }
- }
+    }
 
     Component.onCompleted: {
         filesModel.clear()

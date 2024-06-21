@@ -36,8 +36,10 @@ function setmergefilesModel(){
 }
 
 function addtoVideoList(){
+    // 使用 Qt.url() 将字符串转换为 Url 类型
+    var url = Qt.url(arguments[0]);
     var data={
-        "filePath":"file:///"+arguments[0]
+        "filePath":url
     };
     arguments[1].append(data);
 }

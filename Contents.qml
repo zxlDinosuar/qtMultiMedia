@@ -12,6 +12,9 @@ Item {
     property alias mediaDate:_mediaDate
     property alias audioOutput: _audioOutput
     property alias progressSlider:_progressSlider
+    property alias cutStart: _cutStart
+    property alias cutEnd: _cutEnd
+    property alias split:_split
 
     Dialogs {
         id:_allDialogs
@@ -58,12 +61,13 @@ Item {
                 x:parent.width*0.5
                 Rectangle{
                     id:_leftTop_right_top
-                    // property int flag
                     width:parent.width
                     height:parent.height*0.5
                     RowLayout{
                         id:_cutStart
                         property int  flags
+                        property string  starttime //用于存储剪切开始时间的字符串
+                        starttime: _hourEditTop.text+":"+_minuteEditTop.text+":"+_secondEditTop.text
                         width:parent.width
                         height:parent.height/4
                         Label
@@ -98,7 +102,6 @@ Item {
                                 height: parent.height
                                 verticalAlignment: Text.AlignVCenter
                             }
-
                             TextInput{
                                 id:_minuteEditTop
                                 text:"00"
@@ -133,13 +136,19 @@ Item {
                                     implicitWidth:10
                                     implicitHeight:10
                                     id:_forwardTop
-                                    onClicked:Controller.addTime(_hourEditTop,_minuteEditTop,_secondEditTop,_cutStart.flags)
+                                    onClicked:{
+                                        Controller.addTime(_hourEditTop,_minuteEditTop,_secondEditTop,_cutStart.flags);
+                                        cutStart.starttime =_hourEditTop.text+":"+_minuteEditTop.text+":"+_secondEditTop.text;
+                                    }
                                 }
                                 Button{
                                     implicitWidth:10
                                     implicitHeight:10
                                     id:_backwardTop
-                                    onClicked: Controller.reduceTime(_hourEditTop,_minuteEditTop,_secondEditTop,_cutStart.flags)
+                                    onClicked: {
+                                        Controller.reduceTime(_hourEditTop,_minuteEditTop,_secondEditTop,_cutStart.flags);
+                                        cutStart.starttime = _hourEditTop.text+":"+_minuteEditTop.text+":"+_secondEditTop.text;
+                                    }
                                 }
                             }
                         }
@@ -147,7 +156,8 @@ Item {
                     RowLayout{
                         id:_cutEnd
                         property int  flags
-                        focus: true
+                        property string endTime//剪切结束时间
+                        endTime:_hourEditCenter.text+":"+_minuteEditCenter.text+":"+_secondEditCenter.text
                         y:parent.height/4
                         width:parent.width
                         height:parent.height/4
@@ -181,7 +191,6 @@ Item {
                                 height: parent.height
                                 verticalAlignment: Text.AlignVCenter
                             }
-
                             TextInput{
                                 id:_minuteEditCenter
                                 text:"00"
@@ -216,13 +225,18 @@ Item {
                                     implicitWidth:10
                                     implicitHeight:10
                                     id:_forwardCenter
-                                    onClicked:Controller.addTime(_hourEditCenter,_minuteEditCenter,_secondEditCenter,_cutEnd.flags)
+                                    onClicked:{
+                                        Controller.addTime(_hourEditCenter,_minuteEditCenter,_secondEditCenter,_cutEnd.flags);
+                                        cutEnd.endTime = _hourEditCenter.text+":"+_minuteEditCenter.text+":"+_secondEditCenter.text;
+                                    }
                                 }
                                 Button{
                                     implicitWidth:10
                                     implicitHeight:10
                                     id:_backwardCenter
-                                    onClicked: Controller.reduceTime(_hourEditCenter,_minuteEditCenter,_secondEditCenter,_cutEnd.flags)
+                                    onClicked: {Controller.reduceTime(_hourEditCenter,_minuteEditCenter,_secondEditCenter,_cutEnd.flags);
+                                        cutEnd.endTime = _hourEditCenter.text+":"+_minuteEditCenter.text+":"+_secondEditCenter.text;
+                                    }
                                 }
                             }
                         }
@@ -238,7 +252,8 @@ Item {
                     RowLayout{
                         id:_split
                         property int  flags
-                        focus: true
+                        property string breakTime//拆分节点时间
+                        breakTime:_hourEditBottom.text+":"+_minuteEditBottom.text+":"+_minuteEditBottom.text
                         width:parent.width
                         height:parent.height/4
                         Label
@@ -271,7 +286,6 @@ Item {
                                 height: parent.height
                                 verticalAlignment: Text.AlignVCenter
                             }
-
                             TextInput{
                                 id:_minuteEditBottom
                                 text:"00"
@@ -306,13 +320,15 @@ Item {
                                     implicitWidth:10
                                     implicitHeight:10
                                     id:_forwardBottom
-                                    onClicked:Controller.addTime(_hourEditBottom,_minuteEditBottom,_secondEditBottom,_split.flags)
+                                    onClicked:{Controller.addTime(_hourEditBottom,_minuteEditBottom,_secondEditBottom,_split.flags);
+                                        split.breakTime = _hourEditBottom.text+":"+_minuteEditBottom.text+":"+_minuteEditBottom.text;}
                                 }
                                 Button{
                                     implicitWidth:10
                                     implicitHeight:10
                                     id:_backwardBottom
-                                    onClicked:Controller. reduceTime(_hourEditBottom,_minuteEditBottom,_secondEditBottom,_split.flags)
+                                    onClicked:{Controller. reduceTime(_hourEditBottom,_minuteEditBottom,_secondEditBottom,_split.flags)
+                                        split.breakTime=_hourEditBottom.text+":"+_minuteEditBottom.text+":"+_minuteEditBottom.text}
                                 }
                             }
                         }
@@ -371,11 +387,10 @@ Item {
             width:parent.width
             height:parent.height*0.4
             y:parent.height*0.6
-            color:"blue"
             Rectangle{
                 width:parent.width
                 height:parent.height*0.1
-                color: "white"
+                color:Qt.rgba(0,0,0,0.6)
                 Label {
                     height:parent.height
                     text:"素材库"
@@ -390,8 +405,10 @@ Item {
             Rectangle{
                 width:parent.width
                 height:parent.height*0.9
-                color: "white"
+                color:Qt.rgba(0,0,0,0.6)
                 y:parent.height*0.1
+                border.color: "black" // 边框的颜色
+                border.width: 2 // 边框的宽度
 
                 GridView{
                     id:multiPics
@@ -447,11 +464,7 @@ Item {
                     z:-1
                     visible: false
 
-
                 }
-
-
-
             }
         }
     }

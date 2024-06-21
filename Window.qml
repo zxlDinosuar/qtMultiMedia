@@ -37,7 +37,10 @@ ApplicationWindow{
     Actions{
         id:actions
         open.onTriggered: contents.dialogs.fileOpen.open()
-        cut.onTriggered:console.log("zzxxzxz")
+        cut.onTriggered:{console.log("zzxxzxz")
+            console.log(contents.cutStart.starttime)
+            console.log(contents.cutEnd.endTime)
+        }
         addPicture.onTriggered:contents.dialogs.fileOpen1.open()
         exit.onTriggered:Qt.quit()
     }

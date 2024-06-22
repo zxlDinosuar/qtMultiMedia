@@ -14,6 +14,7 @@ Item {
     property alias clearVideolist:_clearVideolist
     property alias clearMergelist:_clearMergelist
     property alias addMergelistfromVideolist:_addMergelistfromVideolist
+    property alias about:_about
 
 
     Action {
@@ -78,5 +79,8 @@ Item {
        id:_addMergelistfromVideolist
        text:qsTr("从视频列表添加到合并列表")
     }
-
+    Action{
+       id:_about
+       text:qsTr("关于")
+    }
 }

@@ -9,6 +9,7 @@ Item {
     property alias dialogs: _allDialogs
     property alias player: _player
     property alias videoList: _videoList
+    property alias videofilesModel:filesModel
     property alias mergeVideoList: _mergeVideolist
     property alias mergefilesModel:_mergefilesModel
     property alias mediaDate:_mediaDate
@@ -43,7 +44,7 @@ Item {
         width: parent.width*0.7
         height:parent.height
         // property int  flags
-        Rectangle{
+        Rectangle{//leftTop
             width:parent.width
             height:parent.height*0.5
             Rectangle{
@@ -192,7 +193,7 @@ Item {
                 }
             }
         }
-        Rectangle{
+        Rectangle{//leftCenter
             id:_sliderAnddurationtime
             property string durationtime//用于存储总时间
             durationtime: Controller.formatTime(player.duration)
@@ -240,7 +241,7 @@ Item {
                 verticalAlignment: Text.AlignVCenter
             }
         }
-        Rectangle{
+        Rectangle{//leftBottom
             width:parent.width
             height:parent.height*0.4
             y:parent.height*0.6
@@ -366,7 +367,7 @@ Item {
             }
         }
     }
-    Rectangle{
+    Rectangle{//right
         x:parent.width*0.7
         width: parent.width*0.3
         height:parent.height

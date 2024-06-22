@@ -139,3 +139,62 @@ void MediaDate::videoBreak(QString breakTime, QString durationTime)
     //用信号实现
     emit addToVideoList(QUrl::fromLocalFile(outputPath));
 }
+//读取剪切出来的视频路径放入txt文件中，用于进行合并
+//需要点击一下合并列表中的视频，才能进行合并
+void MediaDate::readPath(QUrl filePath)
+{
+    QString path = changeValue(filePath.toString());
+    //写入文件
+    qDebug() << path;
+    QFile file;
+    file.setFileName(combPath);
+    qDebug() << "File opened for writing";
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append)) {
+        QTextStream stream(&file);
+        qDebug("test");
+        stream << "file '" << path << "'"
+               << "\n";
+        qDebug("test");
+        file.close();
+        qDebug() << "File closed after writing";
+    }
+}
+//将读取到的txt列表中的视频进行合并
+void MediaDate::videoCombine()
+{
+    //ffmpeg -f concat -safe 0 -i 2.txt -c copy -y o1.mp4
+    QFile sourceFile(inputPath);
+
+    if (!sourceFile.exists()) {
+        emit cannotFindFile();
+        return;
+    }
+    int temp = 1;
+    QString outputPath = QFileInfo(sourceFile).absolutePath() + "/Combine_" + QString::number(temp)
+                         + ".mp4";
+    while (QFile::exists(outputPath)) {
+        temp++;
+        outputPath = QFileInfo(sourceFile).absolutePath() + "/Combine_" + QString::number(temp)
+                     + ".mp4";
+    }
+    QStringList arguments;
+    arguments << "-f"
+              << "concat"
+              << "-safe"
+              << "0"
+              << "-i";
+    arguments << combPath << "-c"
+              << "copy"
+              << "-y" << outputPath;
+    QProcess *clipProcess = new QProcess(this);
+    clipProcess->start(program, arguments);
+    //把合并后的视频放入视频列表
+    emit addToVideoList(QUrl::fromLocalFile(outputPath));
+}
+
+void MediaDate::deleteCombineList()
+{
+    QFile file(combPath);
+    file.open(QFile::WriteOnly | QFile::Truncate);
+    file.close();
+}

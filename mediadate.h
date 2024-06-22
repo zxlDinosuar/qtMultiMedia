@@ -14,6 +14,9 @@ public:
     Q_INVOKABLE void saveFile(QString savePath);
     Q_INVOKABLE void videoEdit(QString startTime, QString lenTime);
     Q_INVOKABLE void videoBreak(QString breakTime, QString durationTime);
+    Q_INVOKABLE void readPath(QUrl filePath);
+    Q_INVOKABLE void videoCombine();
+    Q_INVOKABLE void deleteCombineList();
 
 public:
     explicit MediaDate(QObject *parent = nullptr);

@@ -9,7 +9,7 @@ Item {
     property alias tipDialoglowminutes:_tipDialoglowminutes
     property alias tipDialoglowhours:_tipDialoglowhour
     property alias fileOpen1: _fileOpen1
-
+    property alias fileOpen2: _fileOpen2
     FileDialog {
         id: _fileOpen
         title: "Select some song files"
@@ -17,7 +17,13 @@ Item {
         currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
         nameFilters: [ "video files (*.mp4 *.avi *.mkv)" ]
     }
-
+    FileDialog {
+        id: _fileOpen2
+        title: "Select some song files"
+        fileMode: FileDialog.OpenFiles
+        currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+        nameFilters: [ "txt files (*.txt *docx)" ]
+    }
     MessageDialog{
         id:_about
         modality: Qt.WindowModal

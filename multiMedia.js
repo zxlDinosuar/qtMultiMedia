@@ -155,8 +155,8 @@ function addmoreView(Layout,compenment){
     console.log("ok")
     //console.log()
     console.log(compenment.currentItem.x)
-    Layout.x=compenment.currentItem.x
-    Layout.y=compenment.currentItem.y+100
+    Layout.x=compenment.currentItem.x+100
+    Layout.y=compenment.currentItem.y
 }
 function  del(index,Model) {
     if (typeof index === 'number' && index >= 0) {
@@ -164,5 +164,14 @@ function  del(index,Model) {
     } else {
         console.error("Invalid index: ", index);
     }
+}
+function showdialog(compenment){
+    compenment.visible=true
 
+}
+
+function setModel(selectedFile)
+{
+    var filepath=selectedFile
+    console.log(filepath)
 }

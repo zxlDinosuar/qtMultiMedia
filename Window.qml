@@ -47,7 +47,7 @@ ApplicationWindow{
              contents.mediaDate.readPath(contents.videoList.currentItem.filepath)}
         cut.onTriggered: contents.mediaDate.videoEdit(contents.timeEdit1.times,contents.timeEdit2.times)
         split.onTriggered: contents.mediaDate.videoBreak(contents.timeEdit3.times,contents.sliderAnddurationtime.durationtime)
-
+derive.onTriggered:Controller.showdialog(contents.saveDialogComponent)
         clearVideolist.onTriggered: contents.videofilesModel.clear()
         clearMergelist.onTriggered: {contents.mergefilesModel.clear()
         contents.mediaDate.deleteCombineList()
@@ -58,6 +58,8 @@ ApplicationWindow{
         addPicture.onTriggered:contents.dialogs.fileOpen1.open()
         exit.onTriggered:Qt.quit()
         about.onTriggered: contents.dialogs.about.open()
+         addSubtitles.onTriggered: contents.dialogs.fileOpen2.open()
+          addText.onTriggered:Controller.showdialog(contents.textInputDialogComponent)
     }
 
     Contents{

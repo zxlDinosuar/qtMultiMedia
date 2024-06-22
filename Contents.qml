@@ -22,11 +22,13 @@ Item {
     property alias timeEdit1: _timeEdit1
     property alias timeEdit2: _timeEdit2
     property alias timeEdit3: _timeEdit3
-
+property alias saveDialogComponent:_saveDialogComponent
+    property alias textInputDialogComponent:_textInputDialogComponent
     Dialogs {
         id:_allDialogs
         fileOpen.onAccepted: Controller.setFilesModel(fileOpen.selectedFiles,filesModel,videoList)
         fileOpen1.onAccepted: Controller.setFileModel(fileOpen1.selectedFiles,video_fileModel,multiPics)
+        fileOpen2.onAccepted:Controller.setModel(fileOpen2.selectedFile)
     }
 
     Connections {
@@ -40,9 +42,15 @@ Item {
         id:_mediaDate
     }
 
+
     Rectangle{//left
         width: parent.width*0.7
         height:parent.height
+        TapHandler{
+            onTapped: {
+              Controller.exit_singleView(add);
+            }
+        }
         // property int  flags
         Rectangle{//leftTop
             width:parent.width
@@ -245,6 +253,7 @@ Item {
             width:parent.width
             height:parent.height*0.4
             y:parent.height*0.6
+
             Rectangle{
                 width:parent.width
                 height:parent.height*0.1
@@ -255,9 +264,39 @@ Item {
                     verticalAlignment: Text.AlignVCenter
                 }
                 Button{
-                    x:parent.width*0.9
+                    visible: true
+                    id:butt
+                    x:parent.width*0.80
                     text:"添加特效"
                     height:parent.height
+                    onClicked: teixiao.visible=true
+                }
+                // Button{
+                //     visible: false
+                //     id:but
+                //     text:"^"
+                //     x:butt.x+85
+                //     TapHandler{
+                //         id:more
+                //         onTapped:
+                //         {
+                //             Controller.showdialog(teixiao)
+                //         }
+                //     }
+                // }
+                ColumnLayout {
+
+                    id: teixiao
+                    visible: false // 默认隐藏，您可以根据需要设置条件来显示
+                    x: butt.x +81
+                    y: butt.y-88
+
+                    focus: true
+                    //  Text { text: '<b>Name:</b> ' + model.name } // 使用 model.name
+                    Button{text: '淡入';onClicked:teixiao.visible=false}
+                    Button{text: '淡出';onClicked:teixiao.visible=false}
+                    Button{text: '旋转';onClicked:teixiao.visible=false}
+                    Button{text: '移动';onClicked:teixiao.visible=false}
                 }
             }
             Rectangle{
@@ -476,6 +515,68 @@ Item {
     Component.onCompleted: {
         filesModel.clear()
         //Controller.initial()
+    }
+    Dialog {
+        id: _textInputDialogComponent
+        title: "输入文字"
+        anchors.centerIn: parent
+        width: 300
+        height: 150
+        focus:true
+        Column {
+            anchors.centerIn: parent
+            TextField {
+                id: textInput
+                width: 250
+                placeholderText: "请输入文字..."
+            }
+            Button {
+                text: "确认"
+                width: 80
+                onClicked: {
+                    console.log("输入的文字: ", textInput.text)
+                    _textInputDialogComponent.visible = false
+                }
+            }
+        }
+    }
+    Dialog {
+        id:_saveDialogComponent
+        title: "保存"
+        anchors.centerIn: parent
+        width: 400
+        height: 200
+        focus:true
+        Column {
+
+            anchors.centerIn: parent
+            // TextEdit{
+            //     text: "是否保存"
+            // }
+            TextField {
+                id: textin
+                width: 250
+                placeholderText: "请输入文件名..."
+            }
+            Row{
+                Button {
+                    text: "OK"
+                    width: 80
+                    onClicked: {
+                        _saveDialogComponent.visible = false
+                         console.log("输入的文件名: ", textin.text)
+                    }
+
+                }
+                Button {
+                    text: "NO"
+                    width: 80
+                    onClicked: {
+                        _saveDialogComponent.visible = false
+                    }
+                }
+            }
+        }
     }
 }
 

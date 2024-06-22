@@ -58,8 +58,8 @@ derive.onTriggered:Controller.showdialog(contents.saveDialogComponent)
         addPicture.onTriggered:contents.dialogs.fileOpen1.open()
         exit.onTriggered:Qt.quit()
         about.onTriggered: contents.dialogs.about.open()
-         addSubtitles.onTriggered: contents.dialogs.fileOpen2.open()
-          addText.onTriggered:Controller.showdialog(contents.textInputDialogComponent)
+        addSubtitles.onTriggered: contents.dialogs.fileOpen2.open()
+        addText.onTriggered:Controller.showdialog(contents.textInputDialogComponent)
     }
 
     Contents{

@@ -22,7 +22,7 @@ Item {
     property alias timeEdit1: _timeEdit1
     property alias timeEdit2: _timeEdit2
     property alias timeEdit3: _timeEdit3
-property alias saveDialogComponent:_saveDialogComponent
+    property alias saveDialogComponent:_saveDialogComponent
     property alias textInputDialogComponent:_textInputDialogComponent
     Dialogs {
         id:_allDialogs
@@ -48,7 +48,7 @@ property alias saveDialogComponent:_saveDialogComponent
         height:parent.height
         TapHandler{
             onTapped: {
-              Controller.exit_singleView(add);
+                Controller.exit_singleView(add);
             }
         }
         // property int  flags
@@ -346,7 +346,7 @@ property alias saveDialogComponent:_saveDialogComponent
                             onTapped: {
                                 multiPics.currentIndex = index
                                 console.log("currentIndex in multiPics: ", multiPics.currentIndex)
-                               Controller.singleView(singlePic)
+                                Controller.singleView(singlePic)
                             }
                         }
                         TapHandler{
@@ -372,7 +372,7 @@ property alias saveDialogComponent:_saveDialogComponent
                         TapHandler{
                             id:halo
                             onTapped: {
-                              Controller.del(multiPics.currentIndex,video_fileModel);
+                                Controller.del(multiPics.currentIndex,video_fileModel);
                             }
                         }
 
@@ -523,19 +523,31 @@ property alias saveDialogComponent:_saveDialogComponent
         width: 300
         height: 150
         focus:true
-        Column {
+        ColumnLayout {
             anchors.centerIn: parent
             TextField {
                 id: textInput
                 width: 250
                 placeholderText: "请输入文字..."
             }
-            Button {
-                text: "确认"
-                width: 80
-                onClicked: {
-                    console.log("输入的文字: ", textInput.text)
-                    _textInputDialogComponent.visible = false
+            RowLayout{
+                Button {
+                    text: "确认"
+                    width: 80
+                    onClicked: {
+                        console.log("输入的文字: ", textInput.text)
+                        mediaDate.addText(textInput.text)
+                        mediaDate.addClicked = true
+                        textInput.clear()
+                        _textInputDialogComponent.visible = false
+                    }
+                }
+                Button {
+                    text: "取消"
+                    width: 80
+                    onClicked: {
+                        _textInputDialogComponent.visible = false
+                    }
                 }
             }
         }
@@ -564,7 +576,7 @@ property alias saveDialogComponent:_saveDialogComponent
                     width: 80
                     onClicked: {
                         _saveDialogComponent.visible = false
-                         console.log("输入的文件名: ", textin.text)
+                        console.log("输入的文件名: ", textin.text)
                     }
 
                 }

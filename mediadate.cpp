@@ -40,13 +40,16 @@ QString MediaDate::changeValue(QString inputpath)
 void MediaDate::list_item_clicked(QString itemPath)
 {
     QString strFileOrg = changeValue(itemPath);
+
     QFile file(inputPath);
     //如果文件存在就先移除再复制，否则直接复制
     if (file.exists()) {
         file.remove();                      //移除已经存在的文件
-        QFile::copy(strFileOrg, inputPath); //文件复制
+        // QFile::copy(strFileOrg, inputPath); //文件复制
+        changeTomp4(strFileOrg, inputPath);
     } else {
-        QFile::copy(strFileOrg, inputPath); //文件复制
+        // QFile::copy(strFileOrg, inputPath); //文件复制
+        changeTomp4(strFileOrg, inputPath);
     }
 }
 
@@ -197,4 +200,76 @@ void MediaDate::deleteCombineList()
     QFile file(combPath);
     file.open(QFile::WriteOnly | QFile::Truncate);
     file.close();
+}
+
+bool MediaDate::addClicked() const
+{
+    return m_addClicked;
+}
+
+void MediaDate::setAddClicked(const bool &cl)
+{
+    if (cl != m_addClicked) {
+        m_addClicked = cl;
+        emit addClickedChanged();
+    }
+}
+
+//素材库添加文字
+void MediaDate::addText(QUrl textName)
+{
+    qDebug() << "textName:" << textName;
+    QString text = textName.toString();
+    qDebug() << text;
+    QFile sourceFile(inputPath);
+    if (!sourceFile.exists()) {
+        emit cannotFindFile();
+        return;
+    }
+    QString outputPath;
+    if (m_addClicked == false) {
+        int temp = 1;
+        outputPath = QFileInfo(sourceFile).absolutePath() + "/addText" + QString::number(temp)
+                     + ".mp4";
+        while (QFile::exists(outputPath)) {
+            temp++;
+            outputPath = QFileInfo(sourceFile).absolutePath() + "/addText" + QString::number(temp)
+                         + ".mp4";
+        }
+        addPath = outputPath;
+    }
+    outputPath = addPath;
+
+    QStringList arguments;
+    //设置起止时间
+    QString str = "drawtext=text='" + text + "':x=20:y=20:fontsize=100:fontcolor=yellow:shadowy=2";
+    arguments << "-i" << inputPath << "-vf" << str;
+    arguments << outputPath;
+    qDebug() << str;
+    qDebug() << arguments;
+
+    QProcess *clipProcess = new QProcess(this);
+    clipProcess->start(program, arguments);
+    if (m_addClicked == false) {
+        emit addToVideoList(QUrl::fromLocalFile(outputPath));
+    }
+}
+//将输入文件转换为mp4文件
+void MediaDate::changeTomp4(QString strFileOrg, QString outputPath)
+{
+    // 实现将inputPath对应的文件转换为.mp4文件
+    QStringList arguments;
+    arguments << "-i" << strFileOrg << "-c:v"
+              << "libx264"
+              << "-preset"
+              << "medium"
+              << "-crf"
+              << "23"
+              << "-c:a"
+              << "aac"
+              << "-b:a"
+              << "128k" << outputPath;
+    QProcess *clipProcess = new QProcess(this);
+    clipProcess->start("ffmpeg", arguments);
+    qDebug() << outputPath;
 }

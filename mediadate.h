@@ -8,7 +8,6 @@
 class MediaDate : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(bool addClicked READ addClicked WRITE setAddClicked NOTIFY addClickedChanged FINAL)
     QML_ELEMENT
 public:
     Q_INVOKABLE void list_item_clicked(QString itemPath);
@@ -19,15 +18,13 @@ public:
     Q_INVOKABLE void videoCombine();
     Q_INVOKABLE void deleteCombineList();
     Q_INVOKABLE void addText(QUrl textName);
+    Q_INVOKABLE void onActionAddTitle(QUrl titleName);
 
 public:
     explicit MediaDate(QObject *parent = nullptr);
     // QString changeValue(QString &inputpath);
     QString changeValue(QString inputpath);
     void changeTomp4(QString strFileOrg, QString outputPath);
-
-    bool addClicked() const;
-    void setAddClicked(const bool &cl);
 
 signals:
     void cannotFindFile();

@@ -22,7 +22,7 @@ Item {
         title: "Select some song files"
         fileMode: FileDialog.OpenFiles
         currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
-        nameFilters: [ "txt files (*.txt *docx)" ]
+        nameFilters: [ "txt files (*.txt *docx *.srt)" ]
     }
     MessageDialog{
         id:_about

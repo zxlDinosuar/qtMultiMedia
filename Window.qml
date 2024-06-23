@@ -61,6 +61,7 @@ derive.onTriggered:Controller.showdialog(contents.saveDialogComponent)
         about.onTriggered: contents.dialogs.about.open()
         addSubtitles.onTriggered: contents.dialogs.fileOpen2.open()
         addText.onTriggered:Controller.showdialog(contents.textInputDialogComponent)
+
     }
 
     Contents{

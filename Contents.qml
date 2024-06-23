@@ -28,7 +28,9 @@ Item {
         id:_allDialogs
         fileOpen.onAccepted: Controller.setFilesModel(fileOpen.selectedFiles,filesModel,videoList)
         fileOpen1.onAccepted: Controller.setFileModel(fileOpen1.selectedFiles,video_fileModel,multiPics)
-        fileOpen2.onAccepted:Controller.setModel(fileOpen2.selectedFile)
+        fileOpen2.onAccepted: {Controller.setModel(fileOpen2.selectedFile)
+            mediaDate.onActionAddTitle(fileOpen2.selectedFile)
+        }
     }
 
     Connections {
@@ -462,7 +464,6 @@ Item {
                             player.source = videoList.currentItem.filepath
                             player.play()
                             mediaDate.list_item_clicked(player.source);
-                            mediaDate.addClicked = false
                         }
                     }
                 }
@@ -544,7 +545,6 @@ Item {
                     onClicked: {
                         console.log("输入的文字: ", textInput.text)
                         mediaDate.addText(textInput.text)
-                        mediaDate.addClicked = true
                         textInput.clear()
                         _textInputDialogComponent.visible = false
                     }

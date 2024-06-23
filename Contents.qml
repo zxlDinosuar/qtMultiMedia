@@ -37,6 +37,12 @@ Item {
             Controller.addtoVideoList(Qt.url(outputPath), filesModel)
         }
     }
+    Connections {
+        target: mediaDate
+        function onAddTomergeVideoListt(outputPath) {
+            Controller.addtomergeVideoList(Qt.url(outputPath), mergefilesModel)
+        }
+    }
 
     MediaDate {
         id:_mediaDate
@@ -456,6 +462,7 @@ Item {
                             player.source = videoList.currentItem.filepath
                             player.play()
                             mediaDate.list_item_clicked(player.source);
+                            mediaDate.addClicked = false
                         }
                     }
                 }

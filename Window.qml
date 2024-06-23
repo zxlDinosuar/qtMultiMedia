@@ -43,7 +43,8 @@ ApplicationWindow{
     Actions{
         id:actions
         open.onTriggered: contents.dialogs.fileOpen.open()
-        addMergelistfromVideolist.onTriggered: {Controller.setmergefilesModel(contents.videoList.currentItem.filepath,contents.mergefilesModel,contents.mergeVideoList);
+        addMergelistfromVideolist.onTriggered: {
+            // Controller.setmergefilesModel(contents.videoList.currentItem.filepath,contents.mergefilesModel,contents.mergeVideoList);
              contents.mediaDate.readPath(contents.videoList.currentItem.filepath)}
         cut.onTriggered: contents.mediaDate.videoEdit(contents.timeEdit1.times,contents.timeEdit2.times)
         split.onTriggered: contents.mediaDate.videoBreak(contents.timeEdit3.times,contents.sliderAnddurationtime.durationtime)

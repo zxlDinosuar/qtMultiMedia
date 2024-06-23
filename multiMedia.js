@@ -27,6 +27,14 @@ function addtoVideoList(){
     arguments[1].append(data);
 }
 
+function addtomergeVideoList(){
+    // 使用 Qt.url() 将字符串转换为 Url 类型
+    var url = Qt.url(arguments[0]);
+    var data={
+        "mergefilePath":url
+    };
+    arguments[1].append(data);
+}
 
 function formatTime(seconds) {
     var times = Math.floor((seconds / 1000))

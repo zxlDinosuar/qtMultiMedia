@@ -41,15 +41,20 @@ void MediaDate::list_item_clicked(QString itemPath)
 {
     QString strFileOrg = changeValue(itemPath);
 
+    QFile sourceFile(inputPath);
+    QFileInfo fileInfo(strFileOrg);
+    QString fileExtension = fileInfo.suffix(); // 获取文件扩展名
+    inputPath = QFileInfo(sourceFile).absolutePath() + "/currentItem." + fileExtension;
+
     QFile file(inputPath);
     //如果文件存在就先移除再复制，否则直接复制
     if (file.exists()) {
         file.remove();                      //移除已经存在的文件
-        // QFile::copy(strFileOrg, inputPath); //文件复制
-        changeTomp4(strFileOrg, inputPath);
+        QFile::copy(strFileOrg, inputPath); //文件复制
+        // changeTomp4(strFileOrg, inputPath);
     } else {
-        // QFile::copy(strFileOrg, inputPath); //文件复制
-        changeTomp4(strFileOrg, inputPath);
+        QFile::copy(strFileOrg, inputPath); //文件复制
+        // changeTomp4(strFileOrg, inputPath);
     }
 }
 
@@ -69,12 +74,14 @@ void MediaDate::videoEdit(QString startTime, QString endTime)
         return;
     }
     int temp = 1;
+    QFileInfo fileInfo(inputPath);
+    QString fileExtension = fileInfo.suffix(); // 获取文件扩展名
     QString outputPath = QFileInfo(sourceFile).absolutePath() + "/clip_" + QString::number(temp)
-                         + ".mp4";
+                         + "." + fileExtension;
     while (QFile::exists(outputPath)) {
         temp++;
-        outputPath = QFileInfo(sourceFile).absolutePath() + "/clip_" + QString::number(temp)
-                     + ".mp4";
+        outputPath = QFileInfo(sourceFile).absolutePath() + "/clip_" + QString::number(temp) + "."
+                     + fileExtension;
     }
     QString sTime = QUrl::fromPercentEncoding(startTime.toUtf8());
     QString lTime = QUrl::fromPercentEncoding(endTime.toUtf8());
@@ -102,12 +109,14 @@ void MediaDate::videoBreak(QString breakTime, QString durationTime)
         return;
     }
     int temp = 1;
+    QFileInfo fileInfo(inputPath);
+    QString fileExtension = fileInfo.suffix(); // 获取文件扩展名
     QString outputPath = QFileInfo(sourceFile).absolutePath() + "/break" + QString::number(temp)
-                         + "_1.mp4";
+                         + "_1." + fileExtension;
     while (QFile::exists(outputPath)) {
         temp++;
-        outputPath = QFileInfo(sourceFile).absolutePath() + "/break" + QString::number(temp)
-                     + "_1.mp4";
+        outputPath = QFileInfo(sourceFile).absolutePath() + "/break" + QString::number(temp) + "_1."
+                     + fileExtension;
     }
     QString bTime = QUrl::fromPercentEncoding(breakTime.toUtf8());
     // QString bTime = breakTime;
@@ -127,7 +136,8 @@ void MediaDate::videoBreak(QString breakTime, QString durationTime)
     emit addToVideoList(QUrl::fromLocalFile(outputPath));
 
     arguments.clear();
-    outputPath = QFileInfo(sourceFile).absolutePath() + "/break" + QString::number(temp) + "_2.mp4";
+    outputPath = QFileInfo(sourceFile).absolutePath() + "/break" + QString::number(temp) + "_2."
+                 + fileExtension;
     arguments << "-i" << inputPath << "-r"
               << "25"
               << "-ss";
@@ -149,17 +159,33 @@ void MediaDate::readPath(QUrl filePath)
     QString path = changeValue(filePath.toString());
     //写入文件
     qDebug() << path;
+
+    QFile sourceFile(inputPath);
+    QFileInfo fileInfo(path);
+    QString fileExtension = fileInfo.suffix(); // 获取文件扩展名
+    QString correctPath = path;
+
+    // 判断文件扩展名是否为.mp4，如果不是，则修改为.mp4
+    if (fileExtension != "mp4") {
+        QString baseName = fileInfo.completeBaseName(); // 获取不带扩展名的文件名
+        correctPath = QFileInfo(sourceFile).absolutePath() + "/" + baseName
+                      + ".mp4"; // 替换为.mp4扩展名
+        changeTomp4(path, correctPath);
+        sleep(1);
+    }
+
     QFile file;
     file.setFileName(combPath);
     qDebug() << "File opened for writing";
     if (file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append)) {
         QTextStream stream(&file);
         qDebug("test");
-        stream << "file '" << path << "'"
+        stream << "file '" << correctPath << "'"
                << "\n";
         qDebug("test");
         file.close();
         qDebug() << "File closed after writing";
+        emit addTomergeVideoListt(QUrl::fromLocalFile(correctPath));
     }
 }
 //将读取到的txt列表中的视频进行合并
@@ -253,11 +279,12 @@ void MediaDate::addText(QUrl textName)
     if (m_addClicked == false) {
         emit addToVideoList(QUrl::fromLocalFile(outputPath));
     }
+    m_addClicked == true;
 }
 //将输入文件转换为mp4文件
 void MediaDate::changeTomp4(QString strFileOrg, QString outputPath)
 {
-    // 实现将inputPath对应的文件转换为.mp4文件
+    // 实现将strFileOrg对应的文件转换为.mp4文件
     QStringList arguments;
     arguments << "-i" << strFileOrg << "-c:v"
               << "libx264"
@@ -270,6 +297,6 @@ void MediaDate::changeTomp4(QString strFileOrg, QString outputPath)
               << "-b:a"
               << "128k" << outputPath;
     QProcess *clipProcess = new QProcess(this);
-    clipProcess->start("ffmpeg", arguments);
+    clipProcess->start(program, arguments);
     qDebug() << outputPath;
 }

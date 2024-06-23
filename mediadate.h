@@ -32,7 +32,7 @@ public:
 signals:
     void cannotFindFile();
     void addToVideoList(QUrl outputPath);
-
+    void addTomergeVideoListt(QUrl outputPath);
     void addClickedChanged();
 
 private:

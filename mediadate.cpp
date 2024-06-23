@@ -9,6 +9,19 @@ MediaDate::MediaDate(QObject *parent)
     : QObject{parent}
 {
     QDir directory = QFileInfo(inputPath).dir();
+    QDir directoryimgaes = QFileInfo(inputImagePath).dir();
+
+    //将图片目录当中的所有图片文件删除
+    if (directoryimgaes.exists()) {
+        QStringList files = directoryimgaes.entryList(QDir::Files);
+        for (const QString &file : files) {
+            QFile::remove(directoryimgaes.filePath(file));
+        }
+    }
+
+    if (!directoryimgaes.exists()) {
+        directoryimgaes.mkpath(directoryimgaes.path()); // 创建所有必需的父目录
+    }
 
     if (!directory.exists()) {
         directory.mkpath(directory.path()); // 创建所有必需的父目录
@@ -319,4 +332,142 @@ void MediaDate::changeTomp4(QString strFileOrg, QString outputPath)
     QProcess *clipProcess = new QProcess(this);
     clipProcess->start(program, arguments);
     qDebug() << outputPath;
+}
+//-codec:a copy：指定音频编码器为复制，即不重新编码音频，直接复制。
+//素材库右键菜单中的 添加到视频左上角 功能
+void MediaDate::addToLeft(QUrl filePath)
+{
+    QString Path = changeValue(filePath.toString()); //读取被选中的图片的路径
+    QFile sourceFile1(inputImagePath);
+    if (!sourceFile1.exists()) {
+        emit cannotFindFile();
+        return;
+    }
+    qDebug() << Path;
+    QStringList arguments1;
+    int temp = 1;
+    QString outputPath1 = QFileInfo(sourceFile1).absolutePath() + "/turnSmall_"
+                          + QString::number(temp) + ".png";
+    while (QFile::exists(outputPath1)) {
+        temp++;
+        outputPath1 = QFileInfo(sourceFile1).absolutePath() + "/turnSmall_" + QString::number(temp)
+                      + ".png";
+    }
+    arguments1 << "-i" << Path << "-vf"
+               << "scale=200:100 " << outputPath1;
+    QProcess *trunSmallProcess = new QProcess(this);
+    trunSmallProcess->start(program, arguments1);
+
+    //等3秒
+    sleep(3);
+    QFile sourceFile(inputPath);
+    QFileInfo fileInfo(inputPath);
+    QString fileExtension = fileInfo.suffix(); // 获取文件扩展名
+    QString outputPath = QFileInfo(sourceFile).absolutePath() + "/watermark_"
+                         + QString::number(temp) + "_1." + fileExtension;
+    while (QFile::exists(outputPath)) {
+        temp++;
+        outputPath = QFileInfo(sourceFile).absolutePath() + "/watermark_" + QString::number(temp)
+                     + "_1." + fileExtension;
+    }
+    QStringList arguments;
+    arguments << "-i" << inputPath << "-i";
+    arguments << outputPath1 << "-filter_complex"
+              << "overlay=10:10"
+              << "-codec:a"
+              << "copy" << outputPath;
+
+    QProcess *clipProcess = new QProcess(this);
+    clipProcess->start(program, arguments);
+    //把添加图片后的视频放入视频列表
+    emit addToVideoList(QUrl::fromLocalFile(outputPath));
+}
+void MediaDate::addToRight(QUrl filePath)
+{
+    QString Path = changeValue(filePath.toString()); //读取被选中的图片的路径
+    QFile sourceFile1(inputImagePath);
+    if (!sourceFile1.exists()) {
+        emit cannotFindFile();
+        return;
+    }
+    qDebug() << Path;
+    QStringList arguments1;
+    int temp = 1;
+    QString outputPath1 = QFileInfo(sourceFile1).absolutePath() + "/turnSmall_"
+                          + QString::number(temp) + ".png";
+    while (QFile::exists(outputPath1)) {
+        temp++;
+        outputPath1 = QFileInfo(sourceFile1).absolutePath() + "/turnSmall_" + QString::number(temp)
+                      + ".png";
+    }
+    arguments1 << "-i" << Path << "-vf"
+               << "scale=200:100 " << outputPath1;
+    QProcess *trunSmallProcess = new QProcess(this);
+    trunSmallProcess->start(program, arguments1);
+
+    //等3秒
+    sleep(3);
+    QFile sourceFile(inputPath);
+    QFileInfo fileInfo(inputPath);
+    QString fileExtension = fileInfo.suffix(); // 获取文件扩展名
+    QString outputPath = QFileInfo(sourceFile).absolutePath() + "/watermark_"
+                         + QString::number(temp) + "_1." + fileExtension;
+    while (QFile::exists(outputPath)) {
+        temp++;
+        outputPath = QFileInfo(sourceFile).absolutePath() + "/watermark_" + QString::number(temp)
+                     + "_1." + fileExtension;
+    }
+    QStringList arguments;
+    arguments << "-i" << inputPath << "-i";
+    arguments << outputPath1 << "-filter_complex"
+              << "overlay=main_w-overlay_w-10:10"
+              << "-codec:a"
+              << "copy" << outputPath;
+
+    QProcess *clipProcess = new QProcess(this);
+    clipProcess->start(program, arguments);
+    //把添加图片后的视频放入视频列表
+    emit addToVideoList(QUrl::fromLocalFile(outputPath));
+}
+void MediaDate::move(QUrl filePath)
+{
+    QString Path = changeValue(filePath.toString()); //读取被选中的图片的路径
+    QFile sourceFile1(inputImagePath);
+    if (!sourceFile1.exists()) {
+        emit cannotFindFile();
+        return;
+    }
+    qDebug() << Path;
+    QStringList arguments1;
+    int temp = 1;
+    QString outputPath1 = QFileInfo(sourceFile1).absolutePath() + "/turnSmall_"
+                          + QString::number(temp) + ".png";
+    arguments1 << "-i" << Path << "-vf"
+               << "scale=200:100 " << outputPath1;
+    QProcess *trunSmallProcess = new QProcess(this);
+    trunSmallProcess->start(program, arguments1);
+
+    sleep(3);
+
+    QFile sourceFile(inputPath);
+    QFileInfo fileInfo(inputPath);
+    QString fileExtension = fileInfo.suffix(); // 获取文件扩展名
+    QString outputPath = QFileInfo(sourceFile).absolutePath() + "/move" + QString::number(temp)
+                         + "_1." + fileExtension;
+    while (QFile::exists(outputPath)) {
+        temp++;
+        outputPath = QFileInfo(sourceFile).absolutePath() + "/move" + QString::number(temp) + "_1."
+                     + fileExtension;
+    }
+    QStringList arguments;
+    //还需要设置起止时间
+    arguments << "-i" << inputPath << "-i" << outputPath1;
+    arguments << "-lavfi"
+              << "overlay=x=t*20"
+              << "-shortest" << outputPath << "-y";
+
+    QProcess *clipProcess = new QProcess(this);
+    clipProcess->start(program, arguments);
+
+    emit addToVideoList(QUrl::fromLocalFile(outputPath));
 }

@@ -19,6 +19,9 @@ public:
     Q_INVOKABLE void deleteCombineList();
     Q_INVOKABLE void addText(QUrl textName);
     Q_INVOKABLE void onActionAddTitle(QUrl titleName);
+    Q_INVOKABLE void addToLeft(QUrl filePath);
+    Q_INVOKABLE void addToRight(QUrl filePath);
+    Q_INVOKABLE void move(QUrl filePath);
 
 public:
     explicit MediaDate(QObject *parent = nullptr);
@@ -35,6 +38,7 @@ signals:
 private:
     QString program = "/usr/bin/ffmpeg";
     QString inputPath = "/root/bbb/resource/currentItem.mp4";
+    QString inputImagePath = "/root/bbb/images/";
     QString combPath = "/root/bbb/resource/combineList.txt";
     bool m_addClicked;
     QString addPath;

@@ -304,7 +304,8 @@ Item {
                     Button{text: '淡入';onClicked:teixiao.visible=false}
                     Button{text: '淡出';onClicked:teixiao.visible=false}
                     Button{text: '旋转';onClicked:teixiao.visible=false}
-                    Button{text: '移动';onClicked:teixiao.visible=false}
+                    Button{text: '移动';onClicked:{teixiao.visible=false
+                   _mediaDate.move(multiPics.currentItem.source) }}
                 }
             }
             Rectangle{
@@ -387,11 +388,14 @@ Item {
                     }
                     Button {
                         text: "添加到视频左上角"
-                        onClicked: add.visible = false
+                        onClicked: {add.visible = false
+                            _mediaDate.addToLeft(multiPics.currentItem.source)
+                        }
                     }
                     Button {
                         text: "添加到视频右上角"
-                        onClicked: add.visible = false
+                        onClicked: {add.visible = false
+                         _mediaDate.addToRight(multiPics.currentItem.source)}
                     }
 
 

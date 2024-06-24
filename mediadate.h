@@ -24,6 +24,7 @@ public:
     Q_INVOKABLE void move(QUrl filePath);
     Q_INVOKABLE void rotate(QUrl filePath);
     Q_INVOKABLE void fadeout(QUrl filePath, QString startTime, QString durTime);
+    Q_INVOKABLE void fadein(QUrl filePath, QString startTimeIn, QString durTimeIn);
 
 public:
     explicit MediaDate(QObject *parent = nullptr);

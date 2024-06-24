@@ -304,7 +304,8 @@ Item {
 
                     focus: true
                     //  Text { text: '<b>Name:</b> ' + model.name } // 使用 model.name
-                    Button{text: '淡入';onClicked:teixiao.visible=false}
+                    Button{text: '淡入';onClicked:{teixiao.visible=false
+                         Controller.showdialog(_fadein)}}
                     Button{text: '淡出';onClicked:{teixiao.visible=false
                         Controller.showdialog(_fadeout)}}
                     Button{text: '旋转';onClicked:{teixiao.visible=false
@@ -647,6 +648,50 @@ Item {
                     width: 80
                     onClicked: {
                         _fadeout.visible = false
+                    }
+                }
+            }
+        }
+    }
+    Dialog {
+        id: _fadein
+        title: "淡入"
+        anchors.centerIn: parent
+        width: 300
+        height: 150
+        focus:true
+        ColumnLayout {
+            anchors.centerIn: parent
+            RowLayout{
+                TextField {
+                    id: starttime
+                    width: 250
+                    placeholderText: "淡入时间"
+                }
+                TextField {
+                    id: duratime
+                    width: 250
+                    placeholderText: "持续时间"
+                }
+            }
+            RowLayout{
+                Button {
+                    text: "确认"
+                    width: 80
+                    onClicked: {
+                        console.log("输入的秒数: ", starttime.text)
+                         _mediaDate.fadein(multiPics.currentItem.source,starttime.text,duratime.text)
+                        starttime.clear()
+                        duratime.clear()
+                        _fadein.visible = false
+                    }
+                }
+                Button {
+                    //anchors.right: parent
+                    text: "取消"
+                    width: 80
+                    onClicked: {
+                        _fadein.visible = false
                     }
                 }
             }

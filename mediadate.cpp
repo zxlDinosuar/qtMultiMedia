@@ -471,3 +471,51 @@ void MediaDate::move(QUrl filePath)
 
     emit addToVideoList(QUrl::fromLocalFile(outputPath));
 }
+
+//旋转
+//ffmpeg -i 安装失败后的步骤.mp4 -loop 1 -i resized_image.png -lavfi "[1:v]format=rgba,rotate='PI/2*t:c=0x00000000:ow=hypot(iw,ih):oh=ow'[out];[0:v][out]overlay=10:10" -shortest output.mp4 -y
+void MediaDate::rotate(QUrl filePath)
+{
+    QString Path = changeValue(filePath.toString()); //读取被选中的图片的路径
+    QFile sourceFile1(inputImagePath);
+    if (!sourceFile1.exists()) {
+        emit cannotFindFile();
+        return;
+    }
+    qDebug() << Path;
+    QStringList arguments1;
+    int temp = 1;
+    QString outputPath1 = QFileInfo(sourceFile1).absolutePath() + "/turnSmall_"
+                          + QString::number(temp) + ".png";
+    arguments1 << "-i" << Path << "-vf"
+               << "scale=200:100 " << outputPath1;
+    QProcess *trunSmallProcess = new QProcess(this);
+    trunSmallProcess->start(program, arguments1);
+
+    sleep(3);
+
+    QFile sourceFile(inputPath);
+    QFileInfo fileInfo(inputPath);
+    QString fileExtension = fileInfo.suffix(); // 获取文件扩展名
+    QString outputPath = QFileInfo(sourceFile).absolutePath() + "/rotate" + QString::number(temp)
+                         + "_1." + fileExtension;
+    while (QFile::exists(outputPath)) {
+        temp++;
+        outputPath = QFileInfo(sourceFile).absolutePath() + "/rotate" + QString::number(temp)
+                     + "_1." + fileExtension;
+    }
+    QStringList arguments;
+    //还需要设置起止时间
+    arguments << "-i" << inputPath << "-loop"
+              << "1"
+              << "-i" << outputPath1;
+    arguments << "-lavfi"
+              << "[1:v]format=rgba,rotate='PI/"
+                 "2*t:c=0x00000000:ow=hypot(iw,ih):oh=ow'[out];[0:v][out]overlay=10:10";
+    arguments << "-shortest" << outputPath << "-y";
+
+    QProcess *clipProcess = new QProcess(this);
+    clipProcess->start(program, arguments);
+
+    addToVideoList(QUrl::fromLocalFile(outputPath));
+}

@@ -10,12 +10,19 @@ Item {
     property alias tipDialoglowhours:_tipDialoglowhour
     property alias fileOpen1: _fileOpen1
     property alias fileOpen2: _fileOpen2
+    property alias errorabout:_errorabout
     FileDialog {
         id: _fileOpen
         title: "Select some song files"
         fileMode: FileDialog.OpenFiles
         currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
         nameFilters: [ "video files (*.mp4 *.avi *.mkv)" ]
+    }
+    MessageDialog{
+        id:_errorabout
+        modality: Qt.WindowModal
+        buttons:MessageDialog.Ok
+        text:"can not find file"
     }
     FileDialog {
         id: _fileOpen2

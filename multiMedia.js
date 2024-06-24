@@ -8,7 +8,9 @@ function setFilesModel(selectedFiles,Model,list){
     }
     list.currentIndex = 0;//currentIndex equals to -1 default,so it must be set to  0
 }
-
+function errorab(compenment){
+    compenment.open()
+}
 function setmergefilesModel(){
     console.log(arguments[0])
     var data={

@@ -45,17 +45,15 @@ ApplicationWindow{
         open.onTriggered: contents.dialogs.fileOpen.open()
         addMergelistfromVideolist.onTriggered: {
             // Controller.setmergefilesModel(contents.videoList.currentItem.filepath,contents.mergefilesModel,contents.mergeVideoList);
-             contents.mediaDate.readPath(contents.videoList.currentItem.filepath)}
+            contents.mediaDate.readPath(contents.videoList.currentItem.filepath)}
         cut.onTriggered: contents.mediaDate.videoEdit(contents.timeEdit1.times,contents.timeEdit2.times)
         split.onTriggered: contents.mediaDate.videoBreak(contents.timeEdit3.times,contents.sliderAnddurationtime.durationtime)
-derive.onTriggered:Controller.showdialog(contents.saveDialogComponent)
+        derive.onTriggered:Controller.showdialog(contents.saveDialogComponent)
         clearVideolist.onTriggered: contents.videofilesModel.clear()
         clearMergelist.onTriggered: {contents.mergefilesModel.clear()
-        contents.mediaDate.deleteCombineList()
+            contents.mediaDate.deleteCombineList()
         }
-
         merge.onTriggered:contents.mediaDate.videoCombine()
-
         addPicture.onTriggered:contents.dialogs.fileOpen1.open()
         exit.onTriggered:Qt.quit()
         about.onTriggered: contents.dialogs.about.open()
@@ -69,7 +67,7 @@ derive.onTriggered:Controller.showdialog(contents.saveDialogComponent)
         anchors.fill: parent
     }
 
- }
+}
 
 
 

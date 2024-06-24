@@ -45,12 +45,15 @@ Item {
             Controller.addtomergeVideoList(Qt.url(outputPath), mergefilesModel)
         }
     }
-
+    Connections {
+        target:mediaDate
+        function onCannotFindFile() {
+            Controller.errorab(dialogs.errorabout)
+        }
+    }
     MediaDate {
         id:_mediaDate
     }
-
-
     Rectangle{//left
         width: parent.width*0.7
         height:parent.height
@@ -303,9 +306,10 @@ Item {
                     //  Text { text: '<b>Name:</b> ' + model.name } // 使用 model.name
                     Button{text: '淡入';onClicked:teixiao.visible=false}
                     Button{text: '淡出';onClicked:teixiao.visible=false}
-                    Button{text: '旋转';onClicked:teixiao.visible=false}
+                    Button{text: '旋转';onClicked:{teixiao.visible=false
+                            mediaDate.rotate(multiPics.currentItem.source)}}
                     Button{text: '移动';onClicked:{teixiao.visible=false
-                   _mediaDate.move(multiPics.currentItem.source) }}
+                            _mediaDate.move(multiPics.currentItem.source) }}
                 }
             }
             Rectangle{
@@ -395,7 +399,7 @@ Item {
                     Button {
                         text: "添加到视频右上角"
                         onClicked: {add.visible = false
-                         _mediaDate.addToRight(multiPics.currentItem.source)}
+                            _mediaDate.addToRight(multiPics.currentItem.source)}
                     }
 
 

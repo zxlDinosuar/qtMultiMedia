@@ -305,7 +305,8 @@ Item {
                     focus: true
                     //  Text { text: '<b>Name:</b> ' + model.name } // 使用 model.name
                     Button{text: '淡入';onClicked:teixiao.visible=false}
-                    Button{text: '淡出';onClicked:teixiao.visible=false}
+                    Button{text: '淡出';onClicked:{teixiao.visible=false
+                        Controller.showdialog(_fadeout)}}
                     Button{text: '旋转';onClicked:{teixiao.visible=false
                             mediaDate.rotate(multiPics.currentItem.source)}}
                     Button{text: '移动';onClicked:{teixiao.visible=false
@@ -567,6 +568,7 @@ Item {
             }
         }
     }
+
     Dialog {
         id:_saveDialogComponent
         title: "保存"
@@ -600,6 +602,51 @@ Item {
                     width: 80
                     onClicked: {
                         _saveDialogComponent.visible = false
+                    }
+                }
+            }
+        }
+    }
+
+    Dialog {
+        id: _fadeout
+        title: "淡出"
+        anchors.centerIn: parent
+        width: 300
+        height: 150
+        focus:true
+        ColumnLayout {
+            anchors.centerIn: parent
+            RowLayout{
+                TextField {
+                    id: starttime2
+                    width: 250
+                    placeholderText: "淡出时间"
+                }
+                TextField {
+                    id: duratime2
+                    width: 250
+                    placeholderText: "持续时间"
+                }
+            }
+            RowLayout{
+                Button {
+                    text: "确认"
+                    width: 80
+                    onClicked: {
+                        console.log("输入的秒数: ", starttime2.text)
+                        _mediaDate.fadeout(multiPics.currentItem.source,starttime2.text,duratime2.text)
+                        starttime2.clear()
+                        duratime2.clear()
+                        _fadeout.visible = false
+                    }
+                }
+                Button {
+                    //anchors.right: parent
+                    text: "取消"
+                    width: 80
+                    onClicked: {
+                        _fadeout.visible = false
                     }
                 }
             }

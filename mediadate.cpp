@@ -519,3 +519,50 @@ void MediaDate::rotate(QUrl filePath)
 
     addToVideoList(QUrl::fromLocalFile(outputPath));
 }
+
+//淡出
+//ffmpeg -i 安装失败后的步骤.mp4 -loop 1 -i resized_image.png -filter_complex "[1]trim=0:30,fade=out:st=4:d=5:alpha=1,setpts=N/25/TB[w];[0][w]overlay=W-w-10:10" fadeIn.mp4
+void MediaDate::fadeout(QUrl filePath, QString startTime, QString durTime)
+{
+    QString Path = changeValue(filePath.toString()); //读取被选中的图片的路径
+    QFile sourceFile1(inputImagePath);               //判断目录是否存在
+    if (!sourceFile1.exists()) {
+        emit cannotFindFile();
+        return;
+    }
+    qDebug() << Path;
+    QStringList arguments1;
+    int temp = 1;
+    QString outputPath1 = QFileInfo(sourceFile1).absolutePath() + "/turnSmall_"
+                          + QString::number(temp) + ".png";
+    arguments1 << "-i" << Path << "-vf"
+               << "scale=200:100 " << outputPath1;
+    QProcess *trunSmallProcess = new QProcess(this);
+    trunSmallProcess->start(program, arguments1);
+
+    sleep(3);
+    QFile sourceFile(inputPath);
+    QFileInfo fileInfo(inputPath);
+    QString fileExtension = fileInfo.suffix(); // 获取文件扩展名
+    QString outputPath = QFileInfo(sourceFile).absolutePath() + "/fadeOut" + QString::number(temp)
+                         + "_1." + fileExtension;
+    while (QFile::exists(outputPath)) {
+        temp++;
+        outputPath = QFileInfo(sourceFile).absolutePath() + "/fadeOut" + QString::number(temp)
+                     + "_1." + fileExtension;
+    }
+    QStringList arguments;
+    //还需要设置起止时间
+    arguments << "-i" << inputPath << "-loop"
+              << "1"
+              << "-i";
+    arguments << outputPath1 << "-filter_complex";
+    QString str = "[1]trim=0:30,fade=out:st=" + startTime + ":d=" + durTime
+                  + ":alpha=1,setpts=N/25/TB[w];[0][w]overlay=W-w-10:10";
+    arguments << str << outputPath;
+
+    QProcess *clipProcess = new QProcess(this);
+    clipProcess->start(program, arguments);
+
+    addToVideoList(QUrl::fromLocalFile(outputPath));
+}

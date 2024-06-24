@@ -23,6 +23,7 @@ public:
     Q_INVOKABLE void addToRight(QUrl filePath);
     Q_INVOKABLE void move(QUrl filePath);
     Q_INVOKABLE void rotate(QUrl filePath);
+    Q_INVOKABLE void fadeout(QUrl filePath, QString startTime, QString durTime);
 
 public:
     explicit MediaDate(QObject *parent = nullptr);

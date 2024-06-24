@@ -35,7 +35,9 @@ qt_add_qml_module(
   SOURCES
   mediadate.h
   mediadate.cpp
-  QML_FILES TimeEdit.qml)
+  zimu.srt
+  QML_FILES
+  TimeEdit.qml)
 
 target_compile_features(appmultiMedia PRIVATE cxx_std_20)
 

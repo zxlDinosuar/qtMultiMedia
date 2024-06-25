@@ -593,8 +593,10 @@ Item {
                     text: "OK"
                     width: 80
                     onClicked: {
+
                         _saveDialogComponent.visible = false
                         console.log("输入的文件名: ", textin.text)
+
                     }
 
                 }

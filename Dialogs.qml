@@ -11,6 +11,8 @@ Item {
     property alias fileOpen1: _fileOpen1
     property alias fileOpen2: _fileOpen2
     property alias errorabout:_errorabout
+    property alias fileSave: _fileSave
+    property alias failToSave: _failToSave
     FileDialog {
         id: _fileOpen
         title: "Select some song files"
@@ -70,5 +72,19 @@ Item {
 
         currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
         nameFilters: [ "Image files (*.png *.jpeg *.jpg)" ]
+    }
+    FileDialog {
+        id: _fileSave
+        title: "保存视频文件"
+        modality: Qt.ApplicationModal
+        currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+        fileMode: FileDialog.SaveFile
+        nameFilters: [ "视频文件 (*.mp4 *.avi *.mkv)" ]
+
+        onAccepted: {
+            // 用户点击“保存”后，这里会触发
+            var selectedFilePath = _fileSave.selectedFile;
+            console.log("用户重命名后的文件路径:", selectedFilePath);
+        }
     }
 }

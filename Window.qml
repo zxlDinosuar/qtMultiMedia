@@ -48,7 +48,8 @@ ApplicationWindow{
             contents.mediaDate.readPath(contents.videoList.currentItem.filepath)}
         cut.onTriggered: contents.mediaDate.videoEdit(contents.timeEdit1.times,contents.timeEdit2.times)
         split.onTriggered: contents.mediaDate.videoBreak(contents.timeEdit3.times,contents.sliderAnddurationtime.durationtime)
-        derive.onTriggered:Controller.showdialog(contents.saveDialogComponent)
+        //derive.onTriggered:Controller.showdialog(contents.saveDialogComponent)
+        derive.onTriggered:contents.dialogs.fileSave.open()
         clearVideolist.onTriggered: contents.videofilesModel.clear()
         clearMergelist.onTriggered: {contents.mergefilesModel.clear()
             contents.mediaDate.deleteCombineList()

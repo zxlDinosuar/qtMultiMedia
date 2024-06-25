@@ -31,6 +31,9 @@ Item {
         fileOpen2.onAccepted: {Controller.setModel(fileOpen2.selectedFile)
             mediaDate.onActionAddTitle(fileOpen2.selectedFile)
         }
+        fileSave.onAccepted: {
+            mediaDate.saveFile(fileSave.selectedFile)
+        }
     }
 
     Connections {

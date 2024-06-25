@@ -74,7 +74,18 @@ void MediaDate::list_item_clicked(QString itemPath)
 //导出视频
 void MediaDate::saveFile(QString savePath)
 {
-    QFile::copy(inputPath, savePath); //文件复制
+    qDebug() << savePath;
+    QString path = changeValue(savePath);
+    qDebug() << path;
+    QFile sourceFile(path);
+    QFileInfo fileInfo(path);
+    QFileInfo fileInfoI(inputPath);
+    QString fileExtension = fileInfoI.suffix();     // 获取文件扩展名
+    QString baseName = fileInfo.completeBaseName(); // 获取不带扩展名的文件名
+
+    QString outputPath = QFileInfo(sourceFile).absolutePath() + "/" + baseName + "."
+                         + fileExtension;
+    QFile::copy(inputPath, outputPath); //文件复制
 }
 
 //剪切视频功能，需要首先设置剪切时间范围

@@ -108,29 +108,40 @@ Item {
                         Rectangle{
                             width:parent.width*0.3
                             height: parent.height
+                            color:Qt.rgba(0,0,0,0.6)
                             Label
                             {
                                 width:parent.width
                                 height: parent.height
                                 text:"剪切开始："
                                 // text:time1.times
-                                color:"black"
+                                color:Qt.rgba(1,1,1,0.8)
                                 leftPadding: parent.width/2
                                 //topPadding: parent.width/7
                                 verticalAlignment: Text.AlignVCenter
                             }
                         }
+
+                        Rectangle{
+                            color:Qt.rgba(0,0,0,0.6)
+                            width:parent.width*0.25
+                            height:parent.height
+                            x:parent.width*0.3
+                        }
                         //实现QTimeEdit相似的功能
                         Rectangle{
-                            width:parent.width*0.7
+                            width:parent.width*0.55
                             height:parent.height
                             x:parent.width*0.55
                             TimeEdit{
                                 id:_timeEdit1
+                                color:Qt.rgba(0,0,0,0.6)
                                 width:parent.width
                                 height:parent.height
                             }
                         }
+
+
                     }
                     Rectangle{
                         id:_cutEnd
@@ -142,26 +153,35 @@ Item {
                         Rectangle{
                             width:parent.width*0.3
                             height: parent.height
+                            color:Qt.rgba(0,0,0,0.6)
                             Label
                             {
                                 width:parent.width
                                 height: parent.height
                                 text:"剪切结束："
-                                // text:time2.times
-                                color:"black"
+                                //color:"white"
+                                color:Qt.rgba(1,1,1,0.8)
                                 leftPadding: parent.width/2
                                 //topPadding: parent.width/7
                                 verticalAlignment: Text.AlignVCenter
                             }
                         }
 
+                        Rectangle{
+                            color:Qt.rgba(0,0,0,0.6)
+                            width:parent.width*0.25
+                            height:parent.height
+                            x:parent.width*0.3
+                        }
+
                         //实现QTimeEdit相似的功能
                         Rectangle{
-                            width:parent.width*0.7
+                            width:parent.width*0.55
                             height:parent.height
                             x:parent.width*0.55
                             TimeEdit{
                                 id:_timeEdit2
+                                color:Qt.rgba(0,0,0,0.6)
                                 width:parent.width
                                 height:parent.height
                             }
@@ -169,12 +189,18 @@ Item {
 
                     }
 
+                    Rectangle{
+                        color:Qt.rgba(0,0,0,0.6)
+                        width:parent.width
+                        height:parent.height*0.5
+                        y:parent.height*0.5
+                    }
                 }
                 Rectangle{
                     id:_leftTop_rightBottom
                     width:parent.width
-                    height:parent.height/2
-                    y:parent.height/2
+                    height:parent.height*0.5
+                    y:parent.height*0.5
                     Rectangle{
                         id:_split
                         property int  flags
@@ -184,33 +210,55 @@ Item {
                         Rectangle{
                             width:parent.width*0.3
                             height: parent.height
+                            color:Qt.rgba(0,0,0,0.6)
                             Label
                             {
                                 width:parent.width
                                 height: parent.height
                                 text:"拆分节点："
-                                color:"black"
+                                color:Qt.rgba(1,1,1,0.8)
                                 leftPadding: parent.width/2
                                 verticalAlignment: Text.AlignVCenter
                                 //topPadding: parent.width/7
 
                             }
                         }
+                        Rectangle{
+                            color:Qt.rgba(0,0,0,0.6)
+                            width:parent.width*0.25
+                            height:parent.height
+                            x:parent.width*0.3
+                        }
 
                         //实现QTimeEdit相似的功能
                         Rectangle{
-                            width:parent.width*0.7
+                            width:parent.width*0.5
                             height:parent.height
                             x:parent.width*0.55
                             TimeEdit{
                                 id:_timeEdit3
+                                color:Qt.rgba(0,0,0,0.6)
                                 width:parent.width
                                 height:parent.height
                             }
                         }
-
-
                     }
+
+                    Rectangle{
+                        color:Qt.rgba(0,0,0,0.6)
+                        width:parent.width
+                        height:parent.height*0.75
+                        y:parent.height*0.25
+                    }
+
+                    // Rectangle{
+                    //     // color:Qt.rgba(0,0,0,0.6)
+                    //     width:parent.width
+                    //     height:parent.height*0.02
+                    //     y:parent.height*0.98
+                    //     color: "black"
+                    // }
+
 
                 }
             }
@@ -432,17 +480,27 @@ Item {
         width: parent.width*0.3
         height:parent.height
         // opacity: 0.0
-        color:Qt.rgba(0,0,0,0.6)
+        //color:Qt.rgba(0,0,0,0.6)
         Rectangle{
             width:parent.width
             height:parent.height*0.5
-            Label {
+            Rectangle{
                 width:parent.width
                 height:parent.height*0.1
-                text:"视频列表"
-                color: "black"
+                color:Qt.rgba(0,0,0,0.6)
+                Label {
+                    width:parent.width
+                    height:parent.height
+                    text:"视频列表"
+                    color:Qt.rgba(1,1,1,0.8)
+                    verticalAlignment: Text.AlignVCenter
+                    // font.pixelSize: 20
+                }
             }
+
+
             Rectangle {
+                color:Qt.rgba(0,0,0,0.3)
                 width:parent.width
                 height:parent.height*0.9
                 y:parent.height*0.1
@@ -461,6 +519,7 @@ Item {
                     property url filepath:filePath
                     width: parent.width
                     height: 30
+                    //color:Qt.rgba(0,0,0,0.6)
                     Text {
                         id:text
                         verticalAlignment:Text.AlignVCenter
@@ -482,22 +541,43 @@ Item {
                 }
             }
         }
+        Rectangle{
+            width:parent.width
+            height:parent.height*0.1
+            y:parent.height*0.5
+            color:Qt.rgba(0,0,0,0.6)
+        }
+        Rectangle{
+            width:parent.width*0.1
+            height:parent.height*0.9
+            y:parent.height*0.6
+            color:Qt.rgba(0,0,0,0.6)
+        }
 
         Rectangle{
             width: parent.width*0.9
             height:parent.height*0.9
             x:parent.width*0.1
             y:parent.height*0.6
-            color:"orange"
-            Label {
-                text:"合并列表（放入合并视频并点击）"
+            Rectangle{
+                color:Qt.rgba(0,0,0,0.6)
                 width: parent.width
-                height:parent.height*0.1
+                height:parent.height*0.05
+                Label {
+                    text:"合并列表（放入合并视频并点击）"
+                    color:Qt.rgba(1,1,1,0.8)
+                    width: parent.width
+                    height:parent.height
+                }
             }
+
             Rectangle{
                 width:parent.width
                 height:parent.height
                 y:parent.height*0.05
+                color:Qt.rgba(0,0,0,0.3)
+                // border.color: Qt.rgba(0,0,0,0.9) // 边框的颜色
+                // border.width: 2 // 边框的宽度
                 ListView{
                     id:_mergeVideolist
                     anchors.fill: parent
@@ -510,10 +590,11 @@ Item {
                     id:mergeRoot
                     property url filepath:mergefilePath
                     width:parent.width
-                    height:20
+                    height:25
+                    //color:Qt.rgba(0,0,0,0.3)
                     Text{
-                        verticalAlignment:Text.AlignVCenter
-                        horizontalAlignment: Text.AlignLeft
+                        // verticalAlignment:Text.AlignVCenter
+                        // horizontalAlignment: Text.AlignLeft
                         color: mergeRoot.ListView.isCurrentItem?"red":"black"
                         width:mergeItem.width
                         font.pixelSize: 13

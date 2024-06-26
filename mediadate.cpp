@@ -187,7 +187,9 @@ void MediaDate::readPath(QUrl filePath)
     QFile sourceFile(inputPath);
     QFileInfo fileInfo(path);
     QString fileExtension = fileInfo.suffix(); // 获取文件扩展名
-    QString correctPath = inputPath;
+    // QString correctPath = inputPath;
+    QString baseName = fileInfo.completeBaseName(); // 获取不带扩展名的文件名
+    QString correctPath = path;
 
     // 判断文件扩展名是否为.mp4，如果不是，则修改为.mp4
     if (fileExtension != "mp4") {
@@ -197,6 +199,7 @@ void MediaDate::readPath(QUrl filePath)
         changeTomp4(inputPath, correctPath);
         sleep(1);
     }
+    qDebug() << correctPath;
 
     QFile file;
     file.setFileName(combPath);

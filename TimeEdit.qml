@@ -19,6 +19,7 @@ Rectangle {
             height: parent.height
             //verticalAlignment: Text.AlignVCenter
             y:parent.height*0.33
+            color:Qt.rgba(1,1,1,0.8)
             TapHandler{
                 onTapped:{
                     _cutStart.flags=0;
@@ -32,12 +33,14 @@ Rectangle {
             height: parent.height
             //verticalAlignment: Text.AlignVCenter
             y:parent.height*0.33
+            color:Qt.rgba(1,1,1,0.8)
         }
 
         TextInput{
             id:_minuteEditTop
             text:"00"
             height: parent.height
+            color:Qt.rgba(1,1,1,0.8)
             //verticalAlignment: Text.AlignVCenter
             y:parent.height*0.33
             TapHandler{
@@ -51,6 +54,7 @@ Rectangle {
             height: parent.height
             //verticalAlignment: Text.AlignVCenter
             y:parent.height*0.33
+            color:Qt.rgba(1,1,1,0.8)
         }
         TextInput{
             id:_secondEditTop
@@ -58,6 +62,7 @@ Rectangle {
             height: parent.height
             //verticalAlignment: Text.AlignVCenter
             y:parent.height*0.33
+            color:Qt.rgba(1,1,1,0.8)
             TapHandler{
                 onTapped:_cutStart.flags=2
             }

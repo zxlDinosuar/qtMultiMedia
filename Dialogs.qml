@@ -38,7 +38,7 @@ Item {
         buttons:MessageDialog.Ok
         text:"This is a free app."
         informativeText: qsTr("MultiMedia is a free software, and you can download its source code from www.open-src.com")
-        detailedText: "CopyrightÂ©2024 zzs (open-src@qq.com)"
+        detailedText: "CopyrightÂ©2024 zhangxiaolong zhangshuang shizhifang (open-src@qq.com)"
     }
     MessageDialog{
         id:_tipDialoglow

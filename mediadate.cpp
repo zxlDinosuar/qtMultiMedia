@@ -184,21 +184,21 @@ void MediaDate::readPath(QUrl filePath)
     //写入文件
     qDebug() << path;
 
-    QFile sourceFile(inputPath);
-    QFileInfo fileInfo(path);
-    QString fileExtension = fileInfo.suffix(); // 获取文件扩展名
-    // QString correctPath = inputPath;
-    QString baseName = fileInfo.completeBaseName(); // 获取不带扩展名的文件名
+    // QFile sourceFile(inputPath);
+    // QFileInfo fileInfo(path);
+    // QString fileExtension = fileInfo.suffix(); // 获取文件扩展名
+    // // QString correctPath = inputPath;
+    // QString baseName = fileInfo.completeBaseName(); // 获取不带扩展名的文件名
     QString correctPath = path;
 
-    // 判断文件扩展名是否为.mp4，如果不是，则修改为.mp4
-    if (fileExtension != "mp4") {
-        QString baseName = fileInfo.completeBaseName(); // 获取不带扩展名的文件名
-        correctPath = QFileInfo(sourceFile).absolutePath() + "/" + baseName
-                      + ".mp4"; // 替换为.mp4扩展名
-        changeTomp4(inputPath, correctPath);
-        sleep(1);
-    }
+    // // 判断文件扩展名是否为.mp4，如果不是，则修改为.mp4
+    // if (fileExtension != "mp4") {
+    //     QString baseName = fileInfo.completeBaseName(); // 获取不带扩展名的文件名
+    //     correctPath = QFileInfo(sourceFile).absolutePath() + "/" + baseName
+    //                   + ".mp4"; // 替换为.mp4扩展名
+    //     changeTomp4(inputPath, correctPath);
+    //     sleep(1);
+    // }
     qDebug() << correctPath;
 
     QFile file;
@@ -233,6 +233,7 @@ void MediaDate::videoCombine()
         outputPath = QFileInfo(sourceFile).absolutePath() + "/Combine_" + QString::number(temp)
                      + ".mp4";
     }
+
     QStringList arguments;
     arguments << "-f"
               << "concat"

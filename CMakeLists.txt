@@ -62,6 +62,10 @@ install(
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
+qt_generate_deploy_app_script(TARGET appmultiMedia FILENAME_VARIABLE
+                              deploy_script NO_UNSUPPORTED_PLATFORM_ERROR)
+install(SCRIPT ${deploy_script})
+
 # qt_add_executable(multiMedia)  //Creates and finalizes an application target
 # of a platform-specific type. This command performs the following tasks: 1.
 # Create a CMake target of the appropriate type for the target platform. 2. Link

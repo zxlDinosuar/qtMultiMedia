@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=video cutter
+Name[zh_CN]=视频剪辑器
+Comment=一个视频剪辑软件
+Comment[zh_CN]=一个视频剪辑软件
+Exec=appmultiMedia
+Icon=/root/qtMultiMedia/qtMultiMedia/视频.png
+Categories=Application;

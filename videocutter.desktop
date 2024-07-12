@@ -1,10 +1,10 @@
 [Desktop Entry]
 Type=Application
-Version=1.0
-Name=video cutter
-Name[zh_CN]=视频剪辑器
-Comment=一个视频剪辑软件
-Comment[zh_CN]=一个视频剪辑软件
-Exec=appmultiMedia
-Icon=/root/qtMultiMedia/qtMultiMedia/视频.png
-Categories=Application;
+Version =1.0
+Name=VideoCutter
+Name[zh_CN]=VideoCutter
+Comment=A simple video cutter
+Exec=/root/project/qtMultiMedia/build/Desktop_Qt_6_7_1-Release/appmultiMedia
+Icon=com.ozmartians.VidCutter
+Terminal=false
+Categories=Qt;KDE;Video;AudioVideo;AudioVideoEditing;
